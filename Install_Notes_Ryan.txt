@@ -1,0 +1,66 @@
+
+This file contains install and running notes for MOM6.
+
+Ryan Holmes
+
+24-6-2016 ------------------------------------------------------------
+To fork and rewrite MOM6 code for contributing to GFDL, use the
+following process:
+Fork both MOM6-examples and MOM6 github GFDL-NOAA repositories on
+github.
+In Simulations/MOM6 clone my MOM6-examples fork:
+git clone git@github.com:rmholmes/MOM6-examples.git ./
+If I want to edit MOM6 code, then at this point change the .gitmodules
+file to have the MOM6 code point to rmholmes/MOM6
+Then get the submodules that I want:
+git submodule init
+git submodule update src/FMS
+git submodule update --init --recursive src/MOM6
+git submodule update tools/matlab/gtools
+git submodule update src/mkmf
+git submodule update tools/python/MIDAS
+
+30-5-2016 ------------------------------------------------------------
+For a simple setup just to play locally, used the following process:
+MOM6 was cloned into Simulations/MOM6 using the following commands:
+
+mkdir MOM6
+cd MOM6
+git clone git@github.com:rmholmes/MOM6-examples.git ./
+git submodule init
+git submodule update src/FMS
+git submodule update --init --recursive src/MOM6
+git submodule update src/mkmf
+
+switched to a new branch to keep changes nice (including this file).
+
+In order to get the following steps to work, needed to change "nc-config"
+to "nf-config" in the linux template file at src/mkmf/templates/linux-gnu.mk
+(3 cases) (like ROMS).
+
+Then followed instructions at
+https://github.com/NOAA-GFDL/MOM6-examples/wiki/Ubuntu-compiler-environment#ubuntu-platform-notes
+:
+        installed packaged csh
+        mkdir -p build/gnu
+        echo > build/gnu/env
+        mkdir -p build/gnu/shared/repro/
+
+1 cmd:  (cd build/gnu/shared/repro/; rm -f path_names; \
+        ../../../../src/mkmf/bin/list_paths ../../../../src/FMS; \
+        ../../../../src/mkmf/bin/mkmf -t ../../../../src/mkmf/templates/linux-gnu.mk -p libfms.a -c "-Duse_libMPI -Duse_netCDF -DSPMD" path_names)
+
+1 cmd:  (cd build/gnu/shared/repro/; source ../../env; make NETCDF=3 REPRO=1 FC=mpif90 CC=mpicc libfms.a -j)
+
+        mkdir -p build/gnu/ocean_only/repro/
+1 cmd:  (cd build/gnu/ocean_only/repro/; rm -f path_names; \
+        ../../../../src/mkmf/bin/list_paths ./ ../../../../src/MOM6/{config_src/dynamic,config_src/solo_driver,src/{*,*/*}}/ ; \
+        ../../../../src/mkmf/bin/mkmf -t ../../../../src/mkmf/templates/linux-gnu.mk -o '-I../../shared/repro' -p 'MOM6 -L../../shared/repro -lfms' -c "-Duse_libMPI -Duse_netCDF -DSPMD" path_names)
+
+1 cmd:  (cd build/gnu/ocean_only/repro/; source ../../env; make NETCDF=3 REPRO=1 FC=mpif90 LD=mpif90 MOM6 -j)
+
+        cd ocean_only/double_gyre/
+        mkdir RESTART
+        ../../build/gnu/ocean_only/repro/MOM6
+
+
