@@ -18,7 +18,6 @@ git submodule update src/FMS
 git submodule update --init --recursive src/MOM6
 git submodule update tools/matlab/gtools
 git submodule update src/mkmf
-git submodule update tools/python/MIDAS
 
 30-5-2016 ------------------------------------------------------------
 For a simple setup just to play locally, used the following process:
@@ -62,5 +61,18 @@ https://github.com/NOAA-GFDL/MOM6-examples/wiki/Ubuntu-compiler-environment#ubun
         cd ocean_only/double_gyre/
         mkdir RESTART
         ../../build/gnu/ocean_only/repro/MOM6
+
+31-05-2016  ----------------------------------------------------------
+installed MIDAS python tools using
+git submodule update tools/python/MIDAS
+cd tools/python/MIDAS
+source activate python2
+make
+
+However, I didn't really need this. The tools/analysis section has
+tools for reconstructing z-coord plots from the layered coordinate
+runs. See example ipython notebook in the flow_downslope example. This
+has been slightly altered to make an example movie.
+
 
 
