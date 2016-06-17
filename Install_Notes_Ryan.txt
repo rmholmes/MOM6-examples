@@ -75,4 +75,21 @@ runs. See example ipython notebook in the flow_downslope example. This
 has been slightly altered to make an example movie.
 
 
+15-06-2016 -----------------------------------------------------------
+Started working on setting the buoyancy flux. The bouyancy
+flux/entrainment of layers appears to occur at lines 660-691 in
+MOM6/src/parameterizations/vertical/MOM_diabatic_driver.F90 When not
+using the ALE algorithm, calls function Entrainment_diffusive to
+calculate entrainment. This function is contained in
+MOM_entrain_diffusive.F90 and reproduces that described in Hallberg,
+MWR (2000)
+This file was stripped of mixed-layer and correct_density code and
+saved into *_ryan_play. The code that determines ea and eb from F is
+in the F_to_ent subroutine. I want to change the input to this
+subroutine. However, there are many restrictions to F that need to be
+taken into account in making these choices.
 
+Coordinate choices: layer = classical layer model where density is
+uniform within layer. rho = ALE representation of a continous
+stratification. z* = ALE representation of z*. sigma = ALE
+representation of sigma.
