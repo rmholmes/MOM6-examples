@@ -93,3 +93,34 @@ Coordinate choices: layer = classical layer model where density is
 uniform within layer. rho = ALE representation of a continous
 stratification. z* = ALE representation of z*. sigma = ALE
 representation of sigma.
+
+20-06-2016 -----------------------------------------------------------
+Working on setup of abyssal mixing case, without buoyancy flux set for
+now. Options that I need to set:
+MOM_input:
+        - use linear EOF with DRHO_DT = 0.0, DRHO_DS = 0.0 or
+          equivalent.
+        - GFS set at 0.98???
+        - TOPO_CONFIG -> Need to change this for my topography.
+        - MINIMUM_DEPTH/MASKING_DEPTH -> Need to change this to allow
+          surface fluxes?
+        - THICKNESS_CONFIG -> Set this for initial conditions.
+        - TS_CONFIG -> Same as above.
+        - Horizontal viscosity: Laplacian 1e4.
+        - Vertical: 1e-4
+        - HBBL: 10.0 -> 10m bottom boundary layer?
+        - KHTH: 1e-4 -> Background horizontal thickness diffusion.
+        - KPP, CONVECTION?
+        - CORRECT_DENSITY = False
+        - BUOY_CONFIG -> Set bouyancy surface forcing?
+        - DOME2D options in MOM_parameter_doc.all -> set shelf width
+          etc. 
+        - USER_CHANGE_DIFFUSIVITY
+
+First thing done: Add a constant diffusivity in the interior of 1m2s-1. This
+gives rise to a nice diapycnal circulation due to the sloped
+topography and the top and bottom boundary conditions. Saved in
+ConstantKappa_NoForcing.gif movie.
+
+Can output diapycnal velocity but in order to output actual vertical
+velocity must diagnose from umo and vmo (github requested feature?).
