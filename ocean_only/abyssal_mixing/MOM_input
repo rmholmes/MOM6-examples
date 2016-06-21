@@ -77,7 +77,7 @@ DT = 300.0                      !   [s]
                                 ! is actually used will be an integer fraction of the
                                 ! forcing time-step (DT_FORCING in ocean-only mode or the
                                 ! coupling timestep in coupled mode.)
-DT_THERM = 900.0                !   [s] default = 300.0
+DT_THERM = 900.0               !   [s] default = 300.0
                                 ! The thermodynamic and tracer advection time step.
                                 ! Ideally DT_THERM should be an integer multiple of DT
                                 ! and less than the forcing or coupling time-step.
@@ -169,9 +169,9 @@ TOPO_CONFIG = "ABMIX2D"          !
                                 !       DOME2D gravity current/overflow test case.
                                 !     seamount - Gaussian bump for spontaneous motion test case.
                                 !     USER - call a user modified routine.
-ABMIX2D_SHELF_WIDTH = 0.0       ! Constant slope setup
-ABMIX2D_BASIN_WIDTH = 0.4
-ABMIX2D_SHELF_DEPTH = 0.0
+!ABMIX2D_SHELF_WIDTH = 0.1       ! Constant slope setup
+!ABMIX2D_BASIN_WIDTH = 0.3
+!ABMIX2D_SHELF_DEPTH = 0.1
 MAXIMUM_DEPTH = 4000.0          !   [m]
                                 ! The maximum depth of the ocean.
 MINIMUM_DEPTH = 1.0             !   [m] default = 0.0
@@ -265,7 +265,7 @@ LAPLACIAN = True                !   [Boolean] default = False
 BIHARMONIC = False              !   [Boolean] default = True
                                 ! If true, se a biharmonic horizontal viscosity.
                                 ! BIHARMONIC may be used with LAPLACIAN.
-KH = 1.0E+04                    !   [m2 s-1] default = 0.0
+KH = 1.0E+06                    !   [m2 s-1] default = 0.0
                                 ! The background Laplacian horizontal viscosity.
 KH_VEL_SCALE = 0.003            !   [m s-1] default = 0.0
                                 ! The velocity scale which is multiplied by the grid
@@ -376,7 +376,7 @@ KHTH = 1.0E-04                  !   [m2 s-1] default = 0.0
 
 ! === module MOM_diabatic_driver ===
 ! The following parameters are used for diabatic processes.
-KD = 0.0                        !   [m2 s-1]
+KD = 0.1                        !   [m2 s-1]
                                 ! The background diapycnal diffusivity of density in the
                                 ! interior. Zero or the molecular value, ~1e-7 m2 s-1,
                                 ! may be used.
@@ -419,14 +419,17 @@ VARIABLE_WINDS = False          !   [Boolean] default = True
 VARIABLE_BUOYFORCE = False      !   [Boolean] default = True
                                 ! If true, the buoyancy forcing varies in time after the
                                 ! initialization of the model.
-BUOY_CONFIG = "linear"          !
+BUOY_CONFIG = "USER"            !
                                 ! The character string that indicates how buoyancy forcing
                                 ! is specified. Valid options include (file), (zero),
                                 ! (linear), (USER), and (NONE).
+HMIX_SFC_PROP = 1.0             ! Depth of SML
 RESTOREBUOY = True              ! Density restoring options for
-FLUXCONST = 50.0                ! surface forced case
-D_NORTH = 1035.0                !
-D_SOUTH = 1036.0                !
+FLUXCONST = 500.0                ! surface forced case
+!D_NORTH = 1035.0               ! For linear gradient restoring
+!D_SOUTH = 1036.0               !
+ABMIX2D_D_Open  = 1035.0125     ! Open water restoring
+ABMIX2D_D_Shelf = 1036.0        !1035.9875     ! Shelf restoring
                                 !
 WIND_CONFIG = "zero"            !
                                 ! The character string that indicates how wind forcing
