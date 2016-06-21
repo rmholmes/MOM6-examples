@@ -71,6 +71,7 @@ BULKMIXEDLAYER = False          !   [Boolean] default = True
                                 ! NKML+NKBL have variable densities. There must be at
                                 ! least NKML+NKBL+1 layers if BULKMIXEDLAYER is true.
                                 ! The default is the same setting as ENABLE_THERMODYNAMICS.
+ENABLE_THERMODYNAMICS = False   !
 DT = 300.0                      !   [s]
                                 ! The (baroclinic) dynamics time step.  The time-step that
                                 ! is actually used will be an integer fraction of the
@@ -375,7 +376,7 @@ KHTH = 1.0E-04                  !   [m2 s-1] default = 0.0
 
 ! === module MOM_diabatic_driver ===
 ! The following parameters are used for diabatic processes.
-KD = 1.0                        !   [m2 s-1]
+KD = 0.0                        !   [m2 s-1]
                                 ! The background diapycnal diffusivity of density in the
                                 ! interior. Zero or the molecular value, ~1e-7 m2 s-1,
                                 ! may be used.
@@ -418,10 +419,15 @@ VARIABLE_WINDS = False          !   [Boolean] default = True
 VARIABLE_BUOYFORCE = False      !   [Boolean] default = True
                                 ! If true, the buoyancy forcing varies in time after the
                                 ! initialization of the model.
-BUOY_CONFIG = "NONE"            !
+BUOY_CONFIG = "linear"          !
                                 ! The character string that indicates how buoyancy forcing
                                 ! is specified. Valid options include (file), (zero),
                                 ! (linear), (USER), and (NONE).
+RESTOREBUOY = True              ! Density restoring options for
+FLUXCONST = 50.0                ! surface forced case
+D_NORTH = 1035.0                !
+D_SOUTH = 1036.0                !
+                                !
 WIND_CONFIG = "zero"            !
                                 ! The character string that indicates how wind forcing
                                 ! is specified. Valid options include (file), (2gyre),

@@ -147,5 +147,33 @@ Managed to successfully run flow-downslope layer and constant kappa
 y-oriented. Only strange thing is plotting which seems to want to go
 to 900km as opposed to 800km?
 
+Problem: With ENABLE_THERMODYNAMICS can't use fluxes%buoy, must use
+bulk mixed layer or a lprecip, sw, evap or sens flux. Thus can't use
+linear restoring (unless with bulk mixed layer). Without
+ENABLE_THERMODYNAMICS the linear buoyancy restoring is not written
+yet.
+
+One option: use ENABLE_THERMODYNAMICS = False, change everything to
+density not salinity, then write the linear restoring for that
+(should be easy?). In fact, turning off ENABLE_THERMODYNAMICS works
+perfectly for this in the layer case.
+
+Density restoring: uses GV%Rlay, layer densities. These are set in
+MOM_coord_initialization.F90, set to LIGHTEST_DENSITY in surface layer
+surface and DENSITY_RANGE heavier at bottom. By default this is
+1035.0. The sfc_density parameter is then derived in file
+src/core/MOM.F90 to be equal to the average density over the upper
+HMIX_SFC_PROP (when not using bulk mixed layer). 
+
+Successfully included linear density restoring by adding code in
+MOM_surface_forcing.F90. This uses a north and south density D_NORTH
+and D_SOUTH to restore linearly with FLUXCONST rate.  Problem is that
+this is only a linear profile and I don't think this gives me what I
+want. Example saved as Dens_Linear.gif
+
+Next try: Restore fast to densist buoyancy just on shelf, elsewhere
+restore to starting buoyancy. Should create a continous plume?
+
+
 
 
