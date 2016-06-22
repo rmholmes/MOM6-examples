@@ -72,41 +72,21 @@ BULKMIXEDLAYER = False          !   [Boolean] default = True
                                 ! least NKML+NKBL+1 layers if BULKMIXEDLAYER is true.
                                 ! The default is the same setting as ENABLE_THERMODYNAMICS.
 ENABLE_THERMODYNAMICS = False   !
-DT = 300.0                      !   [s]
+DT = 1440.0                     !   [s]
                                 ! The (baroclinic) dynamics time step.  The time-step that
                                 ! is actually used will be an integer fraction of the
                                 ! forcing time-step (DT_FORCING in ocean-only mode or the
                                 ! coupling timestep in coupled mode.)
-DT_THERM = 900.0               !   [s] default = 300.0
+DT_THERM = 4320.0               !   [s] default = 300.0
                                 ! The thermodynamic and tracer advection time step.
                                 ! Ideally DT_THERM should be an integer multiple of DT
                                 ! and less than the forcing or coupling time-step.
                                 ! By default DT_THERM is set to DT.
-C_P = 3925.0                    !   [J kg-1 K-1] default = 3991.86795711963
-                                ! The heat capacity of sea water, approximated as a
-                                ! constant. This is only used if ENABLE_THERMODYNAMICS is
-                                ! true. The default value is from the TEOS-10 definition
-                                ! of conservative temperature.
 SAVE_INITIAL_CONDS = True       !   [Boolean] default = False
                                 ! If true, write the initial conditions to a file given
                                 ! by IC_OUTPUT_FILE.
 IC_OUTPUT_FILE = "Initial_state" ! default = "MOM_IC"
                                 ! The file into which to write the initial conditions.
-
-! === module MOM_tracer_registry ===
-EQN_OF_STATE = "LINEAR"         ! default = "WRIGHT"
-                                ! EQN_OF_STATE determines which ocean equation of state
-                                ! should be used.  Currently, the valid choices are
-                                ! "LINEAR", "UNESCO", and "WRIGHT".
-                                ! This is only used if USE_EOS is true.
-DRHO_DT = 0.0                   !   [kg m-3 K-1] default = -0.2
-                                ! When EQN_OF_STATE=LINEAR,
-                                ! this is the partial derivative of density with
-                                ! temperature.
-DRHO_DS = 1.0                   !   [kg m-3 PSU-1] default = 0.8
-                                ! When EQN_OF_STATE=LINEAR,
-                                ! this is the partial derivative of density with
-                                ! salinity.
 
 ! === module MOM_tracer_flow_control ===
 INPUTDIR = "INPUT"              ! default = "."
@@ -169,9 +149,9 @@ TOPO_CONFIG = "ABMIX2D"          !
                                 !       DOME2D gravity current/overflow test case.
                                 !     seamount - Gaussian bump for spontaneous motion test case.
                                 !     USER - call a user modified routine.
-!ABMIX2D_SHELF_WIDTH = 0.1       ! Constant slope setup
-!ABMIX2D_BASIN_WIDTH = 0.3
-!ABMIX2D_SHELF_DEPTH = 0.1
+ABMIX2D_SHELF_WIDTH = 0.0       ! Constant slope setup
+ABMIX2D_BASIN_WIDTH = 0.3
+ABMIX2D_SHELF_DEPTH = 0.0
 MAXIMUM_DEPTH = 4000.0          !   [m]
                                 ! The maximum depth of the ocean.
 MINIMUM_DEPTH = 1.0             !   [m] default = 0.0
@@ -292,7 +272,7 @@ HMIX_FIXED = 20.0               !   [m]
                                 ! The prescribed depth over which the near-surface
                                 ! viscosity and diffusivity are elevated when the bulk
                                 ! mixed layer is not used.
-KV = 1.0E-04                    !   [m2 s-1]
+KV = 0.1                        !   [m2 s-1]
                                 ! The background kinematic viscosity in the interior.
                                 ! The molecular value, ~1e-6 m2 s-1, may be used.
 KVML = 0.01                     !   [m2 s-1] default = 1.0E-04
@@ -361,7 +341,7 @@ BEBT = 0.2                      !   [nondim] default = 0.1
                                 ! 0 (for a forward-backward treatment of nonrotating
                                 ! gravity waves) to 1 (for a backward Euler treatment).
                                 ! In practice, BEBT must be greater than about 0.05.
-DTBT = 20.0                     !   [s or nondim] default = -0.98
+DTBT = 0                        !   [s or nondim] default = -0.98
                                 ! The barotropic time step, in s. DTBT is only used with
                                 ! the split explicit time stepping. To set the time step
                                 ! automatically based the maximum stable value use 0, or
@@ -376,7 +356,7 @@ KHTH = 1.0E-04                  !   [m2 s-1] default = 0.0
 
 ! === module MOM_diabatic_driver ===
 ! The following parameters are used for diabatic processes.
-KD = 0.1                        !   [m2 s-1]
+KD = 0.0                        !   [m2 s-1]
                                 ! The background diapycnal diffusivity of density in the
                                 ! interior. Zero or the molecular value, ~1e-7 m2 s-1,
                                 ! may be used.
@@ -416,20 +396,20 @@ PEN_SW_FRAC = 0.42              !   [nondim] default = 0.0
 ! === module MOM_surface_forcing ===
 VARIABLE_WINDS = False          !   [Boolean] default = True
                                 ! If true, the winds vary in time after the initialization.
-VARIABLE_BUOYFORCE = False      !   [Boolean] default = True
+VARIABLE_BUOYFORCE = True       !   [Boolean] default = True
                                 ! If true, the buoyancy forcing varies in time after the
                                 ! initialization of the model.
 BUOY_CONFIG = "USER"            !
                                 ! The character string that indicates how buoyancy forcing
                                 ! is specified. Valid options include (file), (zero),
                                 ! (linear), (USER), and (NONE).
-HMIX_SFC_PROP = 1.0             ! Depth of SML
-RESTOREBUOY = True              ! Density restoring options for
-FLUXCONST = 500.0                ! surface forced case
-!D_NORTH = 1035.0               ! For linear gradient restoring
-!D_SOUTH = 1036.0               !
+HMIX_SFC_PROP = 1.0             ! 
+RESTOREBUOY = True              ! 
+FLUXCONST = 100.0                ! 
+!D_NORTH = 1035.0125             ! For linear gradient restoring
+!D_SOUTH = 1035.9875             !
 ABMIX2D_D_Open  = 1035.0125     ! Open water restoring
-ABMIX2D_D_Shelf = 1036.0        !1035.9875     ! Shelf restoring
+ABMIX2D_D_Shelf = 1035.9875     ! Shelf restoring
                                 !
 WIND_CONFIG = "zero"            !
                                 ! The character string that indicates how wind forcing
@@ -457,10 +437,6 @@ MAXCPU = 2.88E+04               !   [wall-clock seconds] default = -1.0
                                 ! factor of the number of processors used.
 
 ! === module MOM_main (MOM_driver) ===
-DT_FORCING = 1800.0             !   [s] default = 300.0
-                                ! The time step for changing forcing, coupling with other
-                                ! components, or potentially writing certain diagnostics.
-                                ! The default value is given by DT.
 DAYMAX = 10.0                   !   [hours] default = 12.0
                                 ! The final time of the whole simulation, in units of
                                 ! TIMEUNIT seconds.  This also sets the potential end
@@ -476,6 +452,6 @@ RESTINT = 240.0                 !   [hours] default = 0.0
                                 ! The interval between saves of the restart file in units
                                 ! of TIMEUNIT.  Use 0 (the default) to not save
                                 ! incremental restart files at all.
-ENERGYSAVEDAYS = 1.0            !   [hours] default = 4.32E+04
+ENERGYSAVEDAYS = 24.0           !   [hours] default = 4.32E+04
                                 ! The interval in units of TIMEUNIT between saves of the
                                 ! energies of the run and other globally summed diagnostics.

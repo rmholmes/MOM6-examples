@@ -174,7 +174,7 @@ want. Example saved as Dens_Linear.gif
 Next try: Restore fast to densist buoyancy just on shelf, elsewhere
 restore to starting buoyancy. Should create a continous plume?
 
-Clarificatoin: LIGHTEST_DENSITY is the density at the surface, so the
+Clarification: LIGHTEST_DENSITY is the density at the surface, so the
 density of the top layer will be more than this. For my setup it is
 1035.0125, because I have 40 layers, a top-bottom difference of 1.0
 and thus a half layer difference of 1/40/2 = 0.0125.
@@ -186,5 +186,40 @@ waves. Increased horizontal viscosity to damp these, and removed
 initial salty water on shelf. Result is in Dens_Shelf_Forcing.gif
 movie and in this commit.
 
+22-06-2016 -----------------------------------------------------------
 
+Note: Found a bug, in all of above the buoyancy forcing was time
+independent because VARIABLE_BUOYFORCE = False, so was set to initial
+value. Hence the forcing cases have been rerun:
+1) ConstantKappa_Forcing.gif - Constant Kappa, but surface restoring to
+original surface density everywhere
+2) LinearRestoring.gif - No kappa, linear restoring at surface with no
+shelf.
+3) ShelfRestoring.gif - No kappa, Shelf restoring with default
+shelf. No low initial low salinity.
+5) SlopeRestoring.gif - Restoring above slope 
+
+Unresolved question: Why does the bottom slope not extend all the way
+to the domain edge for WIDTH=0, DEPTH=0???
+
+I don't think surface forcing can give us what we want for several
+reasons:
+1) We want a plume with the bottom density. However, setting this
+means there is only one vertical coodinate grid point in the plume and
+so it's hard to get it off the shelf nicely.
+2) The time step required to resolve the downslope plume is much
+shorter than needed to resolve the diffusive processes. It's too
+expensive?
+
+Alternative is to put a volume source in at the bottom...
+
+Other interesting discoveries:
+     1) KV - vertical viscosity, use this to control waves
+     2) DT_FORCING - If set, limits DT
+     3) ENERGYSAVEDAYS - sets log output frequency
+
+These parameters and others have been changed. Many superflous options
+in MOM_input removed. Changed Bflux to not do over shelf but over slope
+in a specified fraction of domain. A fast FLUXCONST=100.0 value
+simulation is saved in HighVisc_HighFlux.gif, this version commited.
 
