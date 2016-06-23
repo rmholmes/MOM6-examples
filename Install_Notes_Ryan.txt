@@ -206,10 +206,14 @@ I don't think surface forcing can give us what we want for several
 reasons:
 1) We want a plume with the bottom density. However, setting this
 means there is only one vertical coodinate grid point in the plume and
-so it's hard to get it off the shelf nicely.
+so it's hard to get it off the shelf nicely. With a gradient in
+forcing we generate a plume with a range of densities.
 2) The time step required to resolve the downslope plume is much
 shorter than needed to resolve the diffusive processes. It's too
 expensive?
+3) With mixing included the plume will mix out and put flux into
+intermediate layers, unless we restrict mixing to away from the plume
+slope.
 
 Alternative is to put a volume source in at the bottom...
 
@@ -222,4 +226,29 @@ These parameters and others have been changed. Many superflous options
 in MOM_input removed. Changed Bflux to not do over shelf but over slope
 in a specified fraction of domain. A fast FLUXCONST=100.0 value
 simulation is saved in HighVisc_HighFlux.gif, this version commited.
+
+The problems with the viscous simulation seem to come from the initial
+adjustment. The next attempt set the initial density < 0.1 to the
+densiest density so the source of dense water is in the initial
+condition. 
+
+23-06-2016 -----------------------------------------------------------
+
+Profiling: mpirun -n 3 <same executable>
+single processor time to 168: 15.1
+2 processor time to 168: 9.7
+3 processor time to 168: 7.4
+
+Also, reducing vertical viscosity and horizontal viscosity makes the
+solution move faster.
+Run with FLUXCONST = 100.0, KV = 0.0005 saved in Plume1.gif
+Run with FLUXCONST = 10.0,  KV = 0.005  saved in Plume2.gif and Plume2_long.gif
+
+Still have trouble getting dense water out of the nudging region
+without creating intermediate waters.
+How do I fix this? Need to add artificially the flux and not use
+surface forcing.
+
+
+
 

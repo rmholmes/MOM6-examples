@@ -77,7 +77,7 @@ DT = 1440.0                     !   [s]
                                 ! is actually used will be an integer fraction of the
                                 ! forcing time-step (DT_FORCING in ocean-only mode or the
                                 ! coupling timestep in coupled mode.)
-DT_THERM = 4320.0               !   [s] default = 300.0
+!DT_THERM = 8640.0               !   [s] default = 300.0
                                 ! The thermodynamic and tracer advection time step.
                                 ! Ideally DT_THERM should be an integer multiple of DT
                                 ! and less than the forcing or coupling time-step.
@@ -245,7 +245,7 @@ LAPLACIAN = True                !   [Boolean] default = False
 BIHARMONIC = False              !   [Boolean] default = True
                                 ! If true, se a biharmonic horizontal viscosity.
                                 ! BIHARMONIC may be used with LAPLACIAN.
-KH = 1.0E+06                    !   [m2 s-1] default = 0.0
+KH = 1.0E+04                    !   [m2 s-1] default = 0.0
                                 ! The background Laplacian horizontal viscosity.
 KH_VEL_SCALE = 0.003            !   [m s-1] default = 0.0
                                 ! The velocity scale which is multiplied by the grid
@@ -272,7 +272,7 @@ HMIX_FIXED = 20.0               !   [m]
                                 ! The prescribed depth over which the near-surface
                                 ! viscosity and diffusivity are elevated when the bulk
                                 ! mixed layer is not used.
-KV = 0.1                        !   [m2 s-1]
+KV = 0.005                      !   [m2 s-1]
                                 ! The background kinematic viscosity in the interior.
                                 ! The molecular value, ~1e-6 m2 s-1, may be used.
 KVML = 0.01                     !   [m2 s-1] default = 1.0E-04
@@ -405,7 +405,7 @@ BUOY_CONFIG = "USER"            !
                                 ! (linear), (USER), and (NONE).
 HMIX_SFC_PROP = 1.0             ! 
 RESTOREBUOY = True              ! 
-FLUXCONST = 100.0                ! 
+FLUXCONST = 10.0                ! 
 !D_NORTH = 1035.0125             ! For linear gradient restoring
 !D_SOUTH = 1035.9875             !
 ABMIX2D_D_Open  = 1035.0125     ! Open water restoring
