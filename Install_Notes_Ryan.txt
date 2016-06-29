@@ -3,7 +3,7 @@ This file contains install and running notes for MOM6.
 
 Ryan Holmes
 
-24-6-2016 ------------------------------------------------------------
+24-5-2016 ------------------------------------------------------------
 To fork and rewrite MOM6 code for contributing to GFDL, use the
 following process:
 Fork both MOM6-examples and MOM6 github GFDL-NOAA repositories on
@@ -18,7 +18,6 @@ git submodule update src/FMS
 git submodule update --init --recursive src/MOM6
 git submodule update tools/matlab/gtools
 git submodule update src/mkmf
-git submodule update tools/python/MIDAS
 
 30-5-2016 ------------------------------------------------------------
 For a simple setup just to play locally, used the following process:
@@ -63,4 +62,251 @@ https://github.com/NOAA-GFDL/MOM6-examples/wiki/Ubuntu-compiler-environment#ubun
         mkdir RESTART
         ../../build/gnu/ocean_only/repro/MOM6
 
+31-05-2016  ----------------------------------------------------------
+installed MIDAS python tools using
+git submodule update tools/python/MIDAS
+cd tools/python/MIDAS
+source activate python2
+make
+
+However, I didn't really need this. The tools/analysis section has
+tools for reconstructing z-coord plots from the layered coordinate
+runs. See example ipython notebook in the flow_downslope example. This
+has been slightly altered to make an example movie.
+
+
+15-06-2016 -----------------------------------------------------------
+Started working on setting the buoyancy flux. The bouyancy
+flux/entrainment of layers appears to occur at lines 660-691 in
+MOM6/src/parameterizations/vertical/MOM_diabatic_driver.F90 When not
+using the ALE algorithm, calls function Entrainment_diffusive to
+calculate entrainment. This function is contained in
+MOM_entrain_diffusive.F90 and reproduces that described in Hallberg,
+MWR (2000)
+This file was stripped of mixed-layer and correct_density code and
+saved into *_ryan_play. The code that determines ea and eb from F is
+in the F_to_ent subroutine. I want to change the input to this
+subroutine. However, there are many restrictions to F that need to be
+taken into account in making these choices.
+
+Coordinate choices: layer = classical layer model where density is
+uniform within layer. rho = ALE representation of a continous
+stratification. z* = ALE representation of z*. sigma = ALE
+representation of sigma.
+
+20-06-2016 -----------------------------------------------------------
+Working on setup of abyssal mixing case, without buoyancy flux set for
+now. Options that I need to set:
+MOM_input:
+        - use linear EOF with DRHO_DT = 0.0, DRHO_DS = 0.0 or
+          equivalent.
+        - GFS set at 0.98???
+        - TOPO_CONFIG -> Need to change this for my topography.
+        - MINIMUM_DEPTH/MASKING_DEPTH -> Need to change this to allow
+          surface fluxes?
+        - THICKNESS_CONFIG -> Set this for initial conditions.
+        - TS_CONFIG -> Same as above.
+        - Horizontal viscosity: Laplacian 1e4.
+        - Vertical: 1e-4
+        - HBBL: 10.0 -> 10m bottom boundary layer?
+        - KHTH: 1e-4 -> Background horizontal thickness diffusion.
+        - KPP, CONVECTION?
+        - CORRECT_DENSITY = False
+        - BUOY_CONFIG -> Set bouyancy surface forcing?
+        - DOME2D options in MOM_parameter_doc.all -> set shelf width
+          etc. 
+        - USER_CHANGE_DIFFUSIVITY
+
+First thing done: Removed shelf using DOME2D settings in
+MOM_input. Added a constant diffusivity in the interior of
+1m2s-1. This gives rise to a nice diapycnal circulation due to the
+sloped topography and the top and bottom boundary conditions. Saved in
+ConstantKappa_NoForcing.gif movie.
+
+Can output diapycnal velocity but in order to output actual vertical
+velocity must diagnose from umo and vmo (github requested feature?).
+
+Surface forcing:
+Can use: BUOY_CONFIG = "linear",
+RESTORE_BUOY = True,
+FLUXCONST = 0.5, (m day-1)
+SSS_NORTH = ?
+SSS_SOUTH = ?
+But needs to be oriented North-South! Which means I need to change the
+DOME2D topography setup? Try to do this first. Reproduce
+flow_downslope rotated. Then add surface forcing.
+
+To do this: First changes all MOM_input fields X to Y. Then need to
+change both src/MOM6/src/user/DOME2d_initialization and
+src/MOM6/src/initialization/MOM_state_initialization.
+src/MOM6/src/initialization/MOM_fixed_initialization.
+
+21-06-2016 -----------------------------------------------------------
+
+Managed to successfully run flow-downslope layer and constant kappa
+y-oriented. Only strange thing is plotting which seems to want to go
+to 900km as opposed to 800km?
+
+Problem: With ENABLE_THERMODYNAMICS can't use fluxes%buoy, must use
+bulk mixed layer or a lprecip, sw, evap or sens flux. Thus can't use
+linear restoring (unless with bulk mixed layer). Without
+ENABLE_THERMODYNAMICS the linear buoyancy restoring is not written
+yet.
+
+One option: use ENABLE_THERMODYNAMICS = False, change everything to
+density not salinity, then write the linear restoring for that
+(should be easy?). In fact, turning off ENABLE_THERMODYNAMICS works
+perfectly for this in the layer case.
+
+Density restoring: uses GV%Rlay, layer densities. These are set in
+MOM_coord_initialization.F90, set to LIGHTEST_DENSITY in surface layer
+surface and DENSITY_RANGE heavier at bottom. By default this is
+1035.0. The sfc_density parameter is then derived in file
+src/core/MOM.F90 to be equal to the average density over the upper
+HMIX_SFC_PROP (when not using bulk mixed layer). 
+
+Successfully included linear density restoring by adding code in
+MOM_surface_forcing.F90. This uses a north and south density D_NORTH
+and D_SOUTH to restore linearly with FLUXCONST rate.  Problem is that
+this is only a linear profile and I don't think this gives me what I
+want. Example saved as Dens_Linear.gif
+
+Next try: Restore fast to densist buoyancy just on shelf, elsewhere
+restore to starting buoyancy. Should create a continous plume?
+
+Clarification: LIGHTEST_DENSITY is the density at the surface, so the
+density of the top layer will be more than this. For my setup it is
+1035.0125, because I have 40 layers, a top-bottom difference of 1.0
+and thus a half layer difference of 1/40/2 = 0.0125.
+
+Succesfully finished just restoring on the shelf. However, this still
+doesn't work that well because of problems resolving the pressure
+gradient on the shelf when it's all one cell? Leads to lots of fast
+waves. Increased horizontal viscosity to damp these, and removed
+initial salty water on shelf. Result is in Dens_Shelf_Forcing.gif
+movie and in this commit.
+
+22-06-2016 -----------------------------------------------------------
+
+Note: Found a bug, in all of above the buoyancy forcing was time
+independent because VARIABLE_BUOYFORCE = False, so was set to initial
+value. Hence the forcing cases have been rerun:
+1) ConstantKappa_Forcing.gif - Constant Kappa, but surface restoring to
+original surface density everywhere
+2) LinearRestoring.gif - No kappa, linear restoring at surface with no
+shelf.
+3) ShelfRestoring.gif - No kappa, Shelf restoring with default
+shelf. No low initial low salinity.
+5) SlopeRestoring.gif - Restoring above slope 
+
+Unresolved question: Why does the bottom slope not extend all the way
+to the domain edge for WIDTH=0, DEPTH=0???
+
+I don't think surface forcing can give us what we want for several
+reasons:
+1) We want a plume with the bottom density. However, setting this
+means there is only one vertical coodinate grid point in the plume and
+so it's hard to get it off the shelf nicely. With a gradient in
+forcing we generate a plume with a range of densities.
+2) The time step required to resolve the downslope plume is much
+shorter than needed to resolve the diffusive processes. It's too
+expensive?
+3) With mixing included the plume will mix out and put flux into
+intermediate layers, unless we restrict mixing to away from the plume
+slope.
+
+Alternative is to put a volume source in at the bottom...
+
+Other interesting discoveries:
+     1) KV - vertical viscosity, use this to control waves
+     2) DT_FORCING - If set, limits DT
+     3) ENERGYSAVEDAYS - sets log output frequency
+
+These parameters and others have been changed. Many superflous options
+in MOM_input removed. Changed Bflux to not do over shelf but over slope
+in a specified fraction of domain. A fast FLUXCONST=100.0 value
+simulation is saved in HighVisc_HighFlux.gif, this version commited.
+
+The problems with the viscous simulation seem to come from the initial
+adjustment. The next attempt set the initial density < 0.1 to the
+densiest density so the source of dense water is in the initial
+condition. 
+
+23-06-2016 -----------------------------------------------------------
+
+Profiling: mpirun -n 3 <same executable>
+single processor time to 168: 15.1
+2 processor time to 168: 9.7
+3 processor time to 168: 7.4
+
+Also, reducing vertical viscosity and horizontal viscosity makes the
+solution move faster.
+Run with FLUXCONST = 100.0, KV = 0.0005 saved in Plume1.gif
+Run with FLUXCONST = 10.0,  KV = 0.005  saved in Plume2.gif and Plume2_long.gif
+
+Still have trouble getting dense water out of the nudging region
+without creating intermediate waters.
+How do I fix this? Need to add artificially the flux and not use
+surface forcing.
+
+28-06-2016 -----------------------------------------------------------
+Add a volume flux of the bottom density: This could be done at line
+807 of file MOM_diabatic_driver.F90. Want to only do it where layer is
+at deepest part of domain (i.e. not over topography). If want a flux V
+(m3s-1), then want to add a dh = V/A*dt, where dt = time step, A =
+area of deepest part of domain. Will this cause problems where
+topography intercepts the bottom?
+
+Correspondingly, we want to remove a volume flux V from the
+surface. This is much trickier?? Should really be done according to
+the SML/BBL structure.
+
+Buoyancy fluxes: The volume flux V at the bottom adds a buoyancy flux
+V*(densa-densb), and the volume flux at the top adds a buoyancy flux
+V*(densa-denst) into the full domain, where densa = Total Mass/Total
+Volume, densb = bottom density, denst = top density (that is removed
+at V). Thus depending on the densities densb and denst, an additional
+buoyancy flux at the surface may need to be added/subtracted, equal
+to: Bflux_extra = -V*(2*densa - densb - denst)
+
+Can these surface fluxes be added uniformly, and then adjustment would
+occur through horizontal processes?
+
+A scheme to do this: First reduce the top layer by as much as possible
+(without going below an Angstrom). Keep track of how much removed,
+then next layer etc. until volume flux removed. Then after the fact
+add back in Bflux_extra as a uniform surface buoyancy flux on the next
+time step? This Bflux_extra bit might be tricky to code....
+
+Setting F: Replace code between lines 438 onwards.
+
+don't have to worry about mixed layer or anything with kb (buffer
+layers), kmb etc. 
+
+29-06-2016 -----------------------------------------------------------
+
+Adding to h at line 807 of MOM_diabatic_driver.F90 works
+nicely. Example movie saved in AddFlux.gif
+
+Overwritting buoyancy flux calculation between lines 517-736 also
+successfully sets the buoyancy flux. This can be done easily within
+the layers. Examples shown in Interior_converge.gif and
+Bot_Converge.gif. Order of magnitude F that gives a nice change is 1.
+
+For the Bot_Converge.gif, there is convergence of the buoyancy flux
+into the layer one above the bottom, because F is set to zero in the
+bottom layer. This results in net densification - effectively a flux
+through the bottom boundary results. I think this is because of the
+limiting on the change in thickness of the bottom layer, so need to
+think about how to avoid this unphysical flux.
+
+Next steps: - Neaten up code, remove surface forcing changes
+            - Set vol flux nicely using MOM_input options
+            - Set b flux nicely using MOM_input options
+            - Set F in z-space and interpolate to layers using layer
+              positions. W
+
+Neaten up code: New setup files, need to alter
+MOM_fixed_initialization.F90, MOM_state_intialization.F90 and new
+ABMIX2D_initialization - done, check that it runs.
 
