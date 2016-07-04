@@ -341,9 +341,9 @@ BOTTOM_WATER_Y2 = 0.9           ! Northern-most extent of bottom water input (as
                                 ! domain size)
 SET_BFLUX = True                ! Explicitely set buoyancy flux to a
                                 ! bottom intensified exponential profile
-SBF_BBL_THICKNESS = 200.0       ! [m] BBL thickness 
-SBF_DECAY_SCALE = 800.0         ! [m] e-folding decay scale
-SBF_B0 = 0.5                    ! [m2s-3] buoyancy flux at top of BBL
+SBF_BBL_THICKNESS = 500.0       ! [m] BBL thickness 
+SBF_DECAY_SCALE = 1500.0         ! [m] e-folding decay scale
+SBF_B0 = 1.0E-06                ! [m2s-3] buoyancy flux at top of BBL
 
 ! === module MOM_KPP ===
 ! This is the MOM wrapper to CVmix:KPP

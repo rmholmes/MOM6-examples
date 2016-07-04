@@ -308,8 +308,13 @@ into the exponential.
 
 Bottom volume flux written in nicely. 
 
-Buoyancy flux profile added in simplest possible way ignoring finite
-thickness of layer (using center point), ignoring units of F, ignoring
-any limiters on F.
+Buoyancy flux profile added taking into account the min and max
+limiters on F (note: This includes surface flux limiting to zero!!!)
+and units. Added buoyancy flux output diagnostic. Example saved in
+BF_zspace.gif
+
+
+
+
 
 
