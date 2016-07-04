@@ -327,10 +327,23 @@ KHTH = 1.0E-04                  !   [m2 s-1] default = 0.0
 
 ! === module MOM_diabatic_driver ===
 ! The following parameters are used for diabatic processes.
-KD = 1.0                        !   [m2 s-1]
+KD = 0.0                        !   [m2 s-1]
                                 ! The background diapycnal diffusivity of density in the
                                 ! interior. Zero or the molecular value, ~1e-7 m2 s-1,
                                 ! may be used.
+BOTTOM_WATER_INPUT = False      ! If true, add a flux of bottom water by increasing the 
+                                ! thickness of the bottom layer at each time step.
+BOTTOM_WATER_FLUX = 1.0E08      !   [m3 s-1]
+                                ! Bottom water input volume flux
+BOTTOM_WATER_Y1 = 0.7           ! Southern-most extent of bottom water input (as fraction of
+                                ! domain size)
+BOTTOM_WATER_Y2 = 0.9           ! Northern-most extent of bottom water input (as fraction of
+                                ! domain size)
+SET_BFLUX = True                ! Explicitely set buoyancy flux to a
+                                ! bottom intensified exponential profile
+SBF_BBL_THICKNESS = 200.0       ! [m] BBL thickness 
+SBF_DECAY_SCALE = 800.0         ! [m] e-folding decay scale
+SBF_B0 = 0.5                    ! [m2s-3] buoyancy flux at top of BBL
 
 ! === module MOM_KPP ===
 ! This is the MOM wrapper to CVmix:KPP

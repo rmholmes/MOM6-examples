@@ -300,13 +300,16 @@ through the bottom boundary results. I think this is because of the
 limiting on the change in thickness of the bottom layer, so need to
 think about how to avoid this unphysical flux.
 
-Next steps: - Neaten up code, remove surface forcing changes
-            - Set vol flux nicely using MOM_input options
-            - Set b flux nicely using MOM_input options
-            - Set F in z-space and interpolate to layers using layer
-              positions. W
+Buoyancy flux profile: Should be simple. Just start at the bottom with
+the topography and set F upwards using h to get the height z to plug
+into the exponential.
 
-Neaten up code: New setup files, need to alter
-MOM_fixed_initialization.F90, MOM_state_intialization.F90 and new
-ABMIX2D_initialization - done, check that it runs.
+04-07-2016 -----------------------------------------------------------
+
+Bottom volume flux written in nicely. 
+
+Buoyancy flux profile added in simplest possible way ignoring finite
+thickness of layer (using center point), ignoring units of F, ignoring
+any limiters on F.
+
 
