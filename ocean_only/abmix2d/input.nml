@@ -1,4 +1,4 @@
-' &MOM_input_nml
+ &MOM_input_nml
          output_directory = './',
          input_filename = 'n'
          restart_input_dir = 'INPUT/',

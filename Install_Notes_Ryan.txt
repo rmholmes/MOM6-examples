@@ -335,3 +335,8 @@ Changed forcing and units to be more consistent with a slow diffusive
 process. Long time step of 2 hours seems to work. Constant slope saved
 in Proper_Units.gif
 
+Ability to have a curved slope added to topo configuration. Simple
+demonstation of positive and negative curvature slopes done in
+Curved_Slope_Downwelling and Upwelling.gif.
+
+
