@@ -71,7 +71,7 @@ BULKMIXEDLAYER = False          !   [Boolean] default = True
                                 ! least NKML+NKBL+1 layers if BULKMIXEDLAYER is true.
                                 ! The default is the same setting as ENABLE_THERMODYNAMICS.
 ENABLE_THERMODYNAMICS = False   !
-DT = 300.0                      !   [s]
+DT = 7200.0                     !   [s]
                                 ! The (baroclinic) dynamics time step.  The time-step that
                                 ! is actually used will be an integer fraction of the
                                 ! forcing time-step (DT_FORCING in ocean-only mode or the
@@ -143,7 +143,7 @@ TOPO_CONFIG = "ABMIX2D"          !
                                 !       DOME2D gravity current/overflow test case.
                                 !     seamount - Gaussian bump for spontaneous motion test case.
                                 !     USER - call a user modified routine.
-ABMIX2D_SLOPE_DEPTH = 0.1       ! Constant slope setup
+ABMIX2D_SLOPE_DEPTH = 0.3       ! Constant slope setup
 ABMIX2D_BASIN_WIDTH = 0.4
 MAXIMUM_DEPTH = 4000.0          !   [m]
                                 ! The maximum depth of the ocean.
@@ -331,19 +331,19 @@ KD = 0.0                        !   [m2 s-1]
                                 ! The background diapycnal diffusivity of density in the
                                 ! interior. Zero or the molecular value, ~1e-7 m2 s-1,
                                 ! may be used.
-BOTTOM_WATER_INPUT = False      ! If true, add a flux of bottom water by increasing the 
+BOTTOM_WATER_INPUT = True       ! If true, add a flux of bottom water by increasing the 
                                 ! thickness of the bottom layer at each time step.
-BOTTOM_WATER_FLUX = 1.0E08      !   [m3 s-1]
+BOTTOM_WATER_FLUX = 0.1E06      !   [m3 s-1]
                                 ! Bottom water input volume flux
-BOTTOM_WATER_Y1 = 0.7           ! Southern-most extent of bottom water input (as fraction of
+BOTTOM_WATER_Y1 = 0.65          ! Southern-most extent of bottom water input (as fraction of
                                 ! domain size)
-BOTTOM_WATER_Y2 = 0.9           ! Northern-most extent of bottom water input (as fraction of
+BOTTOM_WATER_Y2 = 0.95          ! Northern-most extent of bottom water input (as fraction of
                                 ! domain size)
 SET_BFLUX = True                ! Explicitely set buoyancy flux to a
                                 ! bottom intensified exponential profile
-SBF_BBL_THICKNESS = 500.0       ! [m] BBL thickness 
-SBF_DECAY_SCALE = 1500.0         ! [m] e-folding decay scale
-SBF_B0 = 1.0E-06                ! [m2s-3] buoyancy flux at top of BBL
+SBF_BBL_THICKNESS = 250.0       ! [m] BBL thickness 
+SBF_DECAY_SCALE = 750.0         ! [m] e-folding decay scale
+SBF_B0 = 5.0E-08                ! [m2s-3] buoyancy flux at top of BBL
 
 ! === module MOM_KPP ===
 ! This is the MOM wrapper to CVmix:KPP
@@ -400,7 +400,7 @@ MAXTRUNC = 10                   !   [truncations save_interval-1] default = 0
                                 ! to stop if there is any truncation of velocities.
 DATE_STAMPED_STDOUT = False     !   [Boolean] default = True
                                 ! If true, use dates (not times) in messages to stdout
-TIMEUNIT = 3600.0               !   [s] default = 8.64E+04
+TIMEUNIT = 8.64E+04             !   [s] default = 8.64E+04
                                 ! The time unit in seconds a number of input fields
 MAXCPU = 2.88E+04               !   [wall-clock seconds] default = -1.0
                                 ! The maximum amount of cpu time per processor for which
@@ -413,11 +413,11 @@ MAXCPU = 2.88E+04               !   [wall-clock seconds] default = -1.0
                                 ! factor of the number of processors used.
 
 ! === module MOM_main (MOM_driver) ===
-DT_FORCING = 1800.0             !   [s] default = 300.0
+DT_FORCING =  3600.0            !   [s] default = 300.0
                                 ! The time step for changing forcing, coupling with other
                                 ! components, or potentially writing certain diagnostics.
                                 ! The default value is given by DT.
-DAYMAX = 10.0                   !   [hours] default = 12.0
+DAYMAX = 1000.0                 !   [hours] default = 12.0
                                 ! The final time of the whole simulation, in units of
                                 ! TIMEUNIT seconds.  This also sets the potential end
                                 ! time of the present run segment if the end time is
@@ -428,7 +428,7 @@ RESTART_CONTROL = -1            ! default = 1
                                 ! (bit 0) for a non-time-stamped file. A non-time-stamped
                                 ! restart file is saved at the end of the run segment
                                 ! for any non-negative value.
-RESTINT = 240.0                 !   [hours] default = 0.0
+RESTINT = 0.0                   !   [hours] default = 0.0
                                 ! The interval between saves of the restart file in units
                                 ! of TIMEUNIT.  Use 0 (the default) to not save
                                 ! incremental restart files at all.

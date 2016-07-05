@@ -313,8 +313,25 @@ limiters on F (note: This includes surface flux limiting to zero!!!)
 and units. Added buoyancy flux output diagnostic. Example saved in
 BF_zspace.gif
 
+With Bottom Volume Flux: Added as BF_zspace_with_BVFlux.gif
 
+Some consistent numbers:
+eps_net = B0/bz/tanth*L
+L = 40000
+bz = g/rho0*(drho/dz)
+   = g/rho0*((1/40)/(4000/40))
+   = 2.4e-6
+tanth = (1-0.3)*4000/(1-0.4)/800000
+eps_net = 0.1e6
+=> B0 = 3.5e-8
 
+No! Current example can't drive any net transport up the slope because
+area integrated F doesn't vary in the vertical! Need to add curvature
+to the slope! This is next step.
 
+05-07-2016 -----------------------------------------------------------
 
+Changed forcing and units to be more consistent with a slow diffusive
+process. Long time step of 2 hours seems to work. Constant slope saved
+in Proper_Units.gif
 
