@@ -357,5 +357,38 @@ Added a bottom flux to Upwelling and ran for a long time: Second-last
 layer expands continously because of flat bottom in basin. Saved in
 Curved_Slope_Upwelling_BotFlux_long.gif
 
+09-07-2016 -----------------------------------------------------------
+
+ERROR!!: Looks like there is a problem with mass conservation when the
+SET_BFLUX option is on? Starts at day 60 and corresponds to a volume
+flux of 0.08Sv between then and day 100. Where is this coming from?
+Also leads to an actual flux over the 100 days of 0.17Sv as opposed to
+0.1Sv. WTF? I suspect something funny happens when I hit maxF/minF
+when layers disappear or something? Come back to this. Confirmed that
+F(1) = F(nz) = 0, so physically there should be no net loss of
+mass/volume from the system.
+The time when volume non-conservation begins looks like the time when
+the layer which is just above all the topography (as in, the lightest
+layer that has no grid-points that start with zero thickness) gets to
+zero thickness at it's deepest (most +ve y) point. Keeping the bottom
+layer always thicker than zero (i.e. Bottom flux everywhere) doesn't
+help (shouldn't). We get this problem in 1D (i.e. flat topography!). 
+
+Turn horizontal thickness diffusion up to account for lateral
+dynamics? 
+
+Bug fix: When running parrallel the code in diabatic_driver is only
+run over the segment in the current processor, so the calculation of
+total area in the Bottom flux code was incorrect. Corrected by using
+GV%areaT_global and the fractional area of the Bflux area.
+
+Surface removal code written and works successfully in SERIAL ONLY!
+Need to do something more complicated for a parallel application. 
+
+Example with everything (Bot Flux, Top removal, BFLUX, Curv up) with
+2Sv input saved as CurvUp_Bot_Top.gif, 
+Same without BTop removal saved as CurvUp_Bot.gif
+Same without Bot saved as CurvUp.gif
+
 
 

@@ -144,7 +144,7 @@ TOPO_CONFIG = "ABMIX2D"          !
                                 !     seamount - Gaussian bump for spontaneous motion test case.
                                 !     USER - call a user modified routine.
 ABMIX2D_SLOPE_DEPTH = 0.3       ! Slope setup
-ABMIX2D_BASIN_WIDTH = 0.0
+ABMIX2D_BASIN_WIDTH = 0.3
 ABMIX2D_SLOPE_CURV = 1.0
 MAXIMUM_DEPTH = 4000.0          !   [m]
                                 ! The maximum depth of the ocean.
@@ -332,11 +332,14 @@ KD = 0.0                        !   [m2 s-1]
                                 ! The background diapycnal diffusivity of density in the
                                 ! interior. Zero or the molecular value, ~1e-7 m2 s-1,
                                 ! may be used.
-BOTTOM_WATER_INPUT = True       ! If true, add a flux of bottom water by increasing the 
+BOTTOM_WATER_INPUT = False      ! If true, add a flux of bottom water by increasing the 
                                 ! thickness of the bottom layer at each time step.
-BOTTOM_WATER_FLUX = 0.1E06      !   [m3 s-1]
+BOTTOM_WATER_OUTPUT = False     ! If true, conserve total volume and mass with a bottom
+                                ! water flux by removing an equivalent flux at the surface
+                                ! Note ONLY WORKS IN SERIAL
+BOTTOM_WATER_FLUX = 2.0E06      !   [m3 s-1]
                                 ! Bottom water input volume flux
-BOTTOM_WATER_Y1 = 0.9           ! Southern-most extent of bottom water input (as fraction of
+BOTTOM_WATER_Y1 = 0.7           ! Southern-most extent of bottom water input (as fraction of
                                 ! domain size)
 BOTTOM_WATER_Y2 = 1.0           ! Northern-most extent of bottom water input (as fraction of
                                 ! domain size)
