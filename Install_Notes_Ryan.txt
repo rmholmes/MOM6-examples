@@ -339,4 +339,23 @@ Ability to have a curved slope added to topo configuration. Simple
 demonstation of positive and negative curvature slopes done in
 Curved_Slope_Downwelling and Upwelling.gif.
 
+06-07-2016 -----------------------------------------------------------
+
+Compiled successfully on raijin with a new raijin-intel.mk file (added
+to mkmf/templates). Changed MOM_compile script to automatically pick
+platform. 
+
+08-07-2016 -----------------------------------------------------------
+
+Added net water mass transformation to analysis notebook. +ve means
+downward to dense water. In the Curved_Slope_Upwelling.gif the
+upwelling only dominates once we leave the exponential decay of the
+flat basin bottom (which drives downwelling). While in
+Curved_Slope_Downwelling.gif, it's always downwelling.
+
+Added a bottom flux to Upwelling and ran for a long time: Second-last
+layer expands continously because of flat bottom in basin. Saved in
+Curved_Slope_Upwelling_BotFlux_long.gif
+
+
 
