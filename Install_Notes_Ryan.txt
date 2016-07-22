@@ -450,9 +450,17 @@ However, still seems to be some kind of problem with the top boundary
 layer to get to a steady state? Top layer volume continues to
 increase, some feedback with the mixing and low resolution??
 
-Also the interior does not get quite to a nice steady state. Why?
+This seems to occur only when the top layer is within an e-folding of
+the topography (where something is happening on the
+topography...). So need to do something about mixing on the top
+boundary.
 
-This version git commited and analysis saved as steady_state1*
+Increased order of magnitude the BFLUX and EPS to get solution as fast
+as possible. Added thickness diffusion to stabilize somewhat (doesn't
+work completely -> Becuase there is a CFL condition on KHTH that
+limits it!!!)
 
-Still to solve: Why can't I get to a steady state? Top BCs?
+This version git commited and analysis saved as steady_state1* with a
+comparison steady_state1not with the opposite curvature that doesn't
+get to a steady state.
 
