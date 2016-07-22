@@ -143,9 +143,10 @@ TOPO_CONFIG = "ABMIX2D"          !
                                 !       DOME2D gravity current/overflow test case.
                                 !     seamount - Gaussian bump for spontaneous motion test case.
                                 !     USER - call a user modified routine.
-ABMIX2D_SLOPE_DEPTH = 0.3       ! Slope setup
-ABMIX2D_BASIN_WIDTH = 0.3
-ABMIX2D_SLOPE_CURV = 1.0
+ABMIX2D_SLOPE_DEPTH = 0.0       ! Slope setup
+ABMIX2D_BASIN_WIDTH = 0.0       !
+ABMIX2D_SLOPE_CURV =  0.4       !
+ABMIX2D_INITIAL_BOTTH = 0.0     !
 MAXIMUM_DEPTH = 4000.0          !   [m]
                                 ! The maximum depth of the ocean.
 MINIMUM_DEPTH = 1.0             !   [m] default = 0.0
@@ -332,21 +333,22 @@ KD = 0.0                        !   [m2 s-1]
                                 ! The background diapycnal diffusivity of density in the
                                 ! interior. Zero or the molecular value, ~1e-7 m2 s-1,
                                 ! may be used.
-BOTTOM_WATER_INPUT = False      ! If true, add a flux of bottom water by increasing the 
+BOTTOM_WATER_INPUT = True       ! If true, add a flux of bottom water by increasing the 
                                 ! thickness of the bottom layer at each time step.
-BOTTOM_WATER_OUTPUT = False     ! If true, conserve total volume and mass with a bottom
+BOTTOM_WATER_OUTPUT = True      ! If true, conserve total volume and mass with a bottom
                                 ! water flux by removing an equivalent flux at the surface
                                 ! Note ONLY WORKS IN SERIAL
-BOTTOM_WATER_FLUX = 2.0E06      !   [m3 s-1]
+BOTTOM_WATER_FLUX = 0.0325E06   !   [m3 s-1]
                                 ! Bottom water input volume flux
-BOTTOM_WATER_Y1 = 0.7           ! Southern-most extent of bottom water input (as fraction of
+BOTTOM_WATER_Y1 = 0.95          ! Southern-most extent of bottom water input (as fraction of
                                 ! domain size)
 BOTTOM_WATER_Y2 = 1.0           ! Northern-most extent of bottom water input (as fraction of
                                 ! domain size)
 SET_BFLUX = True                ! Explicitely set buoyancy flux to a
                                 ! bottom intensified exponential profile
-SBF_BBL_THICKNESS = 250.0       ! [m] BBL thickness 
-SBF_DECAY_SCALE = 750.0         ! [m] e-folding decay scale
+SBF_BBL_THICKNESS = 150.0       ! [m] BBL thickness 
+SBF_DECAY_SCALE = 500.0         ! [m] e-folding decay scale
+SBF_TAPER_SCALE = 1000.0        ! [m] e-folding decay scale
 SBF_B0 = 5.0E-08                ! [m2s-3] buoyancy flux at top of BBL
 
 ! === module MOM_KPP ===

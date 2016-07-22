@@ -390,5 +390,69 @@ Example with everything (Bot Flux, Top removal, BFLUX, Curv up) with
 Same without BTop removal saved as CurvUp_Bot.gif
 Same without Bot saved as CurvUp.gif
 
+14-07-2016 -----------------------------------------------------------
 
+Averaged buoyancy fluxes over layer. Made nice upwelling and
+downwelling examples which do not have any regions where topography is
+flat.
+
+
+Volume non-conservation appears because of my bottom volume input,
+even if it is removed at the surface. I think this is because I'm
+holding the bottom layer above an Angstrom but the layers above
+vanish. The non-conservation begins when the second lowest layer hits
+an Angstrom. Maybe because of the order of picking maxF and my
+artificial adjustments?
+
+Chat with Nic:
+
+- Floating point errors: compile with -fpe0 (intel compiler) to turn
+on all floating point error checks (overflow, underflow, not a valid
+representation of a floating point number errors). By default these
+are all off for performance.
+- mpp_sum(Vlay) -> Turns the local Vlay into a global Vlay by summing
+  over all processors. May need to do this for Mex and Vex as well.
+- Totalview: module load totalview
+             mpirun --debug -n 1 ../../build/intel/ocean_only/debug/MOM6
+  (run only on debug compile otherwise order will be screwed up)
+  Ignore startup parameters....
+  wait a while...
+  then press Go....
+  will come up with mpirun is a parallel job, do you want to stop
+  job. press "no"
+  will run, can stop any time. To stop at a particular place:
+  View -> lookup function "diabatic"
+  then put a break-point in (press boxed line number left) then run.
+  will stop at break-point, can examine variables and even plot....
+  
+
+15-07-2016 -----------------------------------------------------------
+
+Added exponential tapering decay towards basin to try to remove the
+convergence in the 2nd bottom layer.
+
+Added initial thick bottom layer option as well.
+
+19-07-2016 -----------------------------------------------------------
+
+Fixed volume/mass conservation error by moving Set_BFlux code block
+above last iteration checks on layer thickness vanishing. Works
+successfully. 
+
+22-07-2016 -----------------------------------------------------------
+
+With input topography and buoyancy flux parameters, can come up with
+a semi-analytical solution that allows me to pick the bottom volume
+flux input to give the correct range of densities throughout the
+depth. This aids getting to a steady state enormously.
+
+However, still seems to be some kind of problem with the top boundary
+layer to get to a steady state? Top layer volume continues to
+increase, some feedback with the mixing and low resolution??
+
+Also the interior does not get quite to a nice steady state. Why?
+
+This version git commited and analysis saved as steady_state1*
+
+Still to solve: Why can't I get to a steady state? Top BCs?
 

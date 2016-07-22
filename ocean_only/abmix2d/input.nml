@@ -17,7 +17,7 @@
  
  &ocean_solo_nml
             months = 0
-            days   = 100
+            days   = 2000
             hours = 0
             minutes = 0
             seconds = 0

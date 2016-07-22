@@ -1,18 +1,24 @@
 "MOM resting experiment"
 1 1 1 0 0 0
-"prog",     1,"days",1,"days","Time"
+"prog",     10,"days",1,"days","Time"
 
 #This is the field section of the diag_table.
 
 # Prognostic Ocean fields:
 #=========================
 
+#u, v, buoyancy_flux available at z-points
 "ocean_model","u","u","prog","all",.false.,"none",2
 "ocean_model","v","v","prog","all",.false.,"none",2
 "ocean_model","wd","wd","prog","all",.false.,"none",2
 "ocean_model","buoyancy_flux","buoyancy_flux","prog","all",.false.,"none",2
 "ocean_model","h","h","prog","all",.false.,"none",1
 "ocean_model","e","e","prog","all",.false.,"none",2
+"ocean_model","volo","volo","prog","all",.false.,"none",2
+"ocean_model","masso","masso","prog","all",.false.,"none",2
+#"ocean_model","ea","ea","prog","all",.false.,"none",2
+#"ocean_model","eb","eb","prog","all",.false.,"none",2
+#"ocean_model","e_D","e_D","prog","all",.false.,"none",2
 
 #=============================================================================================
 #
