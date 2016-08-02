@@ -125,7 +125,7 @@ LENLAT = 800.0                  !   [k]
                                 ! The latitudinal or y-direction length of the domain.
 LENLON = 40.0                   !   [k]
                                 ! The longitudinal or x-direction length of the domain.
-TOPO_CONFIG = "ABMIX2D"          !
+TOPO_CONFIG = "file"          !
                                 ! This specifies how bathymetry is specified:
                                 !     file - read bathymetric information from the file
                                 !       specified by (TOPO_FILE).

@@ -476,3 +476,10 @@ in a steady state. Saved as run0001* in
 ccrcDAT/Abyssal_Mixing/MOM6_runs output images saved as
 steady5krun... Started a similar run with opposite curvature.
 
+02-08-2016 -----------------------------------------------------------
+
+Added ability to set topography using a netcdf file and python code in
+Analytical_Analysis.ipynb. Reinterprete y-points correctly in Abyssal
+Mixing Quick Analysis
+
+
