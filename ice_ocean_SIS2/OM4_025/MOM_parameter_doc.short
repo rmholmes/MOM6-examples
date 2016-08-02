@@ -1,36 +1,6 @@
 ! This file was written by the model and records the non-default parameters used at run-time.
 
-! === module MOM_domains ===
-TRIPOLAR_N = True               !   [Boolean] default = False
-                                ! Use tripolar connectivity at the northern edge of the
-                                ! domain.  With TRIPOLAR_N, NIGLOBAL must be even.
-NIGLOBAL = 1440                 !
-                                ! The total number of thickness grid points in the
-                                ! x-direction in the physical domain. With STATIC_MEMORY_
-                                ! this is set in MOM_memory.h at compile time.
-NJGLOBAL = 1080                 !
-                                ! The total number of thickness grid points in the
-                                ! y-direction in the physical domain. With STATIC_MEMORY_
-                                ! this is set in MOM_memory.h at compile time.
-
-! === module MOM_grid ===
-! Parameters providing information about the lateral grid.
-
-! === module MOM_hor_index ===
-! Sets the horizontal array index types.
-
-! === module MOM_verticalGrid ===
-! Parameters providing information about the vertical grid.
-NK = 75                         !   [nondim]
-                                ! The number of model layers.
-
 ! === module MOM ===
-BULKMIXEDLAYER = False          !   [Boolean] default = True
-                                ! If true, use a Kraus-Turner-like bulk mixed layer
-                                ! with transitional buffer layers.  Layers 1 through
-                                ! NKML+NKBL have variable densities. There must be at
-                                ! least NKML+NKBL+1 layers if BULKMIXEDLAYER is true.
-                                ! The default is the same setting as ENABLE_THERMODYNAMICS.
 USE_REGRIDDING = True           !   [Boolean] default = False
                                 ! If True, use the ALE algorithm (regridding/remapping).
                                 ! If False, use the layered isopycnal algorithm.
@@ -96,6 +66,27 @@ WRITE_GEOM = 0                  ! default = 1
                                 ! If =1, write the geometry and vertical grid files only for
                                 ! a new simulation. If =2, always write the geometry and
                                 ! vertical grid files. Other values are invalid.
+
+! === module MOM_domains ===
+TRIPOLAR_N = True               !   [Boolean] default = False
+                                ! Use tripolar connectivity at the northern edge of the
+                                ! domain.  With TRIPOLAR_N, NIGLOBAL must be even.
+NIGLOBAL = 1440                 !
+                                ! The total number of thickness grid points in the
+                                ! x-direction in the physical domain. With STATIC_MEMORY_
+                                ! this is set in MOM_memory.h at compile time.
+NJGLOBAL = 1080                 !
+                                ! The total number of thickness grid points in the
+                                ! y-direction in the physical domain. With STATIC_MEMORY_
+                                ! this is set in MOM_memory.h at compile time.
+
+! === module MOM_hor_index ===
+! Sets the horizontal array index types.
+
+! === module MOM_verticalGrid ===
+! Parameters providing information about the vertical grid.
+NK = 75                         !   [nondim]
+                                ! The number of model layers.
 
 ! === module MOM_tracer_registry ===
 
@@ -163,6 +154,9 @@ MINIMUM_DEPTH = 9.5             !   [m] default = 0.0
                                 ! MINIMUM_DEPTH is assumed to be land and all fluxes are masked out.
                                 ! If MASKING_DEPTH is specified, then all depths shallower than
                                 ! MINIMUM_DEPTH but deeper than MASKING_DEPTH are rounded to MINIMUM_DEPTH.
+
+! === module MOM_open_boundary ===
+! Controls where open boundaries are located, what kind of boundary condition to impose, and what data to apply, if any.
 MASKING_DEPTH = 0.0             !   [m] default = -9999.0
                                 ! The depth below which to mask points as land points, for which all
                                 ! fluxes are zeroed out. MASKING_DEPTH is ignored if negative.
@@ -185,6 +179,8 @@ COORD_CONFIG = "file"           !
                                 ! This specifies how layers are to be defined:
                                 !     file - read coordinate information from the file
                                 !       specified by (COORD_FILE).
+                                !     BFB - Custom coords for buoyancy-forced basin case
+                                !       based on SST_S, T_BOT and DRHO_DT.
                                 !     linear - linear based on interfaces not layers
                                 !     layer_ref - linear based on layer densities
                                 !     ts_ref - use reference temperature and salinity
@@ -248,6 +244,9 @@ REMAPPING_SCHEME = "PPM_H4"     ! default = "PLM"
                                 ! PPM_IH4     (3rd-order accurate)
                                 ! PQM_IH4IH3  (4th-order accurate)
                                 ! PQM_IH6IH5  (5th-order accurate)
+
+! === module MOM_grid ===
+! Parameters providing information about the lateral grid.
 
 ! === module MOM_state_initialization ===
 INIT_LAYERS_FROM_Z_FILE = True  !   [Boolean] default = False
@@ -595,6 +594,9 @@ PRESSURE_DEPENDENT_FRAZIL = True !   [Boolean] default = False
                                 ! faster but is inappropriate with ice-shelf cavities.
 
 ! === module MOM_energetic_PBL ===
+VSTAR_SCALE_FACTOR = 0.9410360288810284 !   [units=nondim] default = 1.0
+                                ! An overall nondimensional scaling factor for v*.
+                                ! Making this larger decreases the PBL diffusivity.
 
 ! === module MOM_regularize_layers ===
 

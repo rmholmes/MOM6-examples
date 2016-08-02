@@ -1,35 +1,5 @@
 ! This file was written by the model and records the non-default parameters used at run-time.
 
-! === module MOM_domains ===
-REENTRANT_Y = True              !   [Boolean] default = False
-                                ! If true, the domain is meridionally reentrant.
-NIGLOBAL = 2                    !
-                                ! The total number of thickness grid points in the
-                                ! x-direction in the physical domain. With STATIC_MEMORY_
-                                ! this is set in MOM_memory.h at compile time.
-NJGLOBAL = 2                    !
-                                ! The total number of thickness grid points in the
-                                ! y-direction in the physical domain. With STATIC_MEMORY_
-                                ! this is set in MOM_memory.h at compile time.
-
-! === module MOM_grid ===
-! Parameters providing information about the lateral grid.
-G_EARTH = 9.80616               !   [m s-2] default = 9.8
-                                ! The gravitational acceleration of the Earth.
-
-! === module MOM_hor_index ===
-! Sets the horizontal array index types.
-
-! === module MOM_verticalGrid ===
-! Parameters providing information about the vertical grid.
-RHO_0 = 1000.0                  !   [kg m-3] default = 1035.0
-                                ! The mean ocean density used with BOUSSINESQ true to
-                                ! calculate accelerations and the mass for conservation
-                                ! properties, or with BOUSSINSEQ false to convert some
-                                ! parameters from vertical units of m to kg m-2.
-NK = 63                         !   [nondim]
-                                ! The number of model layers.
-
 ! === module MOM ===
 SPLIT = False                   !   [Boolean] default = True
                                 ! Use the split time stepping if true.
@@ -46,6 +16,33 @@ C_P = 3992.10322329649          !   [J kg-1 K-1] default = 3991.86795711963
 SAVE_INITIAL_CONDS = True       !   [Boolean] default = False
                                 ! If true, write the initial conditions to a file given
                                 ! by IC_OUTPUT_FILE.
+
+! === module MOM_domains ===
+REENTRANT_Y = True              !   [Boolean] default = False
+                                ! If true, the domain is meridionally reentrant.
+NIGLOBAL = 2                    !
+                                ! The total number of thickness grid points in the
+                                ! x-direction in the physical domain. With STATIC_MEMORY_
+                                ! this is set in MOM_memory.h at compile time.
+NJGLOBAL = 2                    !
+                                ! The total number of thickness grid points in the
+                                ! y-direction in the physical domain. With STATIC_MEMORY_
+                                ! this is set in MOM_memory.h at compile time.
+
+! === module MOM_hor_index ===
+! Sets the horizontal array index types.
+
+! === module MOM_verticalGrid ===
+! Parameters providing information about the vertical grid.
+G_EARTH = 9.80616               !   [m s-2] default = 9.8
+                                ! The gravitational acceleration of the Earth.
+RHO_0 = 1000.0                  !   [kg m-3] default = 1035.0
+                                ! The mean ocean density used with BOUSSINESQ true to
+                                ! calculate accelerations and the mass for conservation
+                                ! properties, or with BOUSSINSEQ false to convert some
+                                ! parameters from vertical units of m to kg m-2.
+NK = 63                         !   [nondim]
+                                ! The number of model layers.
 
 ! === module MOM_tracer_registry ===
 
@@ -111,6 +108,9 @@ MINIMUM_DEPTH = 0.5             !   [m] default = 0.0
                                 ! The minimum depth of the ocean.
 MAXIMUM_DEPTH = 400.0           !   [m]
                                 ! The maximum depth of the ocean.
+
+! === module MOM_open_boundary ===
+! Controls where open boundaries are located, what kind of boundary condition to impose, and what data to apply, if any.
 ROTATION = "betaplane"          ! default = "2omegasinlat"
                                 ! This specifies how the Coriolis parameter is specified:
                                 !     2omegasinlat - Use twice the planetary rotation rate
@@ -126,6 +126,8 @@ COORD_CONFIG = "file"           !
                                 ! This specifies how layers are to be defined:
                                 !     file - read coordinate information from the file
                                 !       specified by (COORD_FILE).
+                                !     BFB - Custom coords for buoyancy-forced basin case
+                                !       based on SST_S, T_BOT and DRHO_DT.
                                 !     linear - linear based on interfaces not layers
                                 !     layer_ref - linear based on layer densities
                                 !     ts_ref - use reference temperature and salinity
@@ -139,6 +141,9 @@ COORD_CONFIG = "file"           !
                                 !     USER - call a user modified routine.
 COORD_FILE = "isopyc_coords.nc" !
                                 ! The file from which the coordinate densities are read.
+
+! === module MOM_grid ===
+! Parameters providing information about the lateral grid.
 
 ! === module MOM_state_initialization ===
 THICKNESS_CONFIG = "uniform"    !
@@ -367,7 +372,7 @@ VARIABLE_WINDS = False          !   [Boolean] default = True
 BUOY_CONFIG = "zero"            !
                                 ! The character string that indicates how buoyancy forcing
                                 ! is specified. Valid options include (file), (zero),
-                                ! (linear), (USER), and (NONE).
+                                ! (linear), (USER), (BFB) and (NONE).
 WIND_CONFIG = "const"           !
                                 ! The character string that indicates how wind forcing
                                 ! is specified. Valid options include (file), (2gyre),

@@ -1,28 +1,5 @@
 ! This file was written by the model and records the non-default parameters used at run-time.
 
-! === module MOM_domains ===
-REENTRANT_X = False             !   [Boolean] default = True
-                                ! If true, the domain is zonally reentrant.
-NIGLOBAL = 44                   !
-                                ! The total number of thickness grid points in the
-                                ! x-direction in the physical domain. With STATIC_MEMORY_
-                                ! this is set in MOM_memory.h at compile time.
-NJGLOBAL = 40                   !
-                                ! The total number of thickness grid points in the
-                                ! y-direction in the physical domain. With STATIC_MEMORY_
-                                ! this is set in MOM_memory.h at compile time.
-
-! === module MOM_grid ===
-! Parameters providing information about the lateral grid.
-
-! === module MOM_hor_index ===
-! Sets the horizontal array index types.
-
-! === module MOM_verticalGrid ===
-! Parameters providing information about the vertical grid.
-NK = 2                          !   [nondim]
-                                ! The number of model layers.
-
 ! === module MOM ===
 ENABLE_THERMODYNAMICS = False   !   [Boolean] default = True
                                 ! If true, Temperature and salinity are used as state
@@ -51,6 +28,26 @@ DTBT_RESET_PERIOD = -1.0        !   [s] default = 2400.0
                                 ! dynamic, DTBT will be set at least every forcing time
                                 ! step, and if 0, every dynamics time step.  The default is
                                 ! set by DT_THERM.  This is only used if SPLIT is true.
+
+! === module MOM_domains ===
+REENTRANT_X = False             !   [Boolean] default = True
+                                ! If true, the domain is zonally reentrant.
+NIGLOBAL = 44                   !
+                                ! The total number of thickness grid points in the
+                                ! x-direction in the physical domain. With STATIC_MEMORY_
+                                ! this is set in MOM_memory.h at compile time.
+NJGLOBAL = 40                   !
+                                ! The total number of thickness grid points in the
+                                ! y-direction in the physical domain. With STATIC_MEMORY_
+                                ! this is set in MOM_memory.h at compile time.
+
+! === module MOM_hor_index ===
+! Sets the horizontal array index types.
+
+! === module MOM_verticalGrid ===
+! Parameters providing information about the vertical grid.
+NK = 2                          !   [nondim]
+                                ! The number of model layers.
 
 ! === module MOM_tracer_registry ===
 
@@ -103,11 +100,16 @@ MINIMUM_DEPTH = 1.0             !   [m] default = 0.0
 MAXIMUM_DEPTH = 2000.0          !   [m]
                                 ! The maximum depth of the ocean.
 
+! === module MOM_open_boundary ===
+! Controls where open boundaries are located, what kind of boundary condition to impose, and what data to apply, if any.
+
 ! === module MOM_coord_initialization ===
 COORD_CONFIG = "gprime"         !
                                 ! This specifies how layers are to be defined:
                                 !     file - read coordinate information from the file
                                 !       specified by (COORD_FILE).
+                                !     BFB - Custom coords for buoyancy-forced basin case
+                                !       based on SST_S, T_BOT and DRHO_DT.
                                 !     linear - linear based on interfaces not layers
                                 !     layer_ref - linear based on layer densities
                                 !     ts_ref - use reference temperature and salinity
@@ -123,6 +125,9 @@ GFS = 0.98                      !   [m s-2] default = 9.8
                                 ! The reduced gravity at the free surface.
 GINT = 0.0098                   !   [m s-2]
                                 ! The reduced gravity across internal interfaces.
+
+! === module MOM_grid ===
+! Parameters providing information about the lateral grid.
 
 ! === module MOM_state_initialization ===
 THICKNESS_CONFIG = "uniform"    !
@@ -298,7 +303,7 @@ VARIABLE_BUOYFORCE = False      !   [Boolean] default = True
 BUOY_CONFIG = "zero"            !
                                 ! The character string that indicates how buoyancy forcing
                                 ! is specified. Valid options include (file), (zero),
-                                ! (linear), (USER), and (NONE).
+                                ! (linear), (USER), (BFB) and (NONE).
 WIND_CONFIG = "2gyre"           !
                                 ! The character string that indicates how wind forcing
                                 ! is specified. Valid options include (file), (2gyre),

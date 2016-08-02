@@ -1,4 +1,6 @@
 ! This file was written by the model and records the non-default parameters used at run-time.
+
+! === module ice_model ===
 CGRID_ICE_DYNAMICS = True       !   [Boolean] default = False
                                 ! If true, use a C-grid discretization of the sea-ice
                                 ! dynamics; if false use a B-grid discretization.
@@ -34,13 +36,14 @@ NJGLOBAL = 1080                 !
                                 ! y-direction in the physical domain. With STATIC_MEMORY_
                                 ! this is set in SIS2_memory.h at compile time.
 
-! === module hor_grid ===
-! Parameters providing information about the lateral grid.
-
 ! === module MOM_hor_index ===
 ! Sets the horizontal array index types.
 
-! === module SIS_grid_initialize ===
+! === module SIS_initialize_fixed ===
+INPUTDIR = "INPUT"              ! default = "."
+                                ! The directory in which input files are found.
+
+! === module MOM_grid_init ===
 GRID_CONFIG = "mosaic"          !
                                 ! A character string that determines the method for
                                 ! defining the horizontal grid.  Current options are:
@@ -51,12 +54,16 @@ GRID_CONFIG = "mosaic"          !
                                 !     mercator - use a Mercator spherical grid.
 GRID_FILE = "ocean_hgrid.nc"    !
                                 ! Name of the file from which to read horizontal grid data.
-INPUTDIR = "INPUT"              ! default = "."
-                                ! The directory in which input files are found.
 !MAXIMUM_DEPTH = 9682.232421875 !   [m]
                                 ! The (diagnosed) maximum depth of the ocean.
 OMEGA = 7.292E-05               !   [s-1] default = 7.2921E-05
                                 ! The rotation rate of the earth.
+
+! === module hor_grid ===
+! Parameters providing information about the lateral grid.
+
+! === module MOM_hor_index ===
+! Sets the horizontal array index types.
 ICE_DELTA_EDD_R_ICE = 1.0       !   [perhaps nondimensional?] default = 0.0
                                 ! A dreadfully documented tuning parameter for the radiative
                                 ! propeties of sea ice with the delta-Eddington radiative
@@ -69,6 +76,10 @@ ICE_DELTA_EDD_R_POND = 1.0      !   [perhaps nondimensional?] default = 0.0
                                 ! A dreadfully documented tuning parameter for the radiative
                                 ! propeties of meltwater ponds on sea ice with the delta-Eddington
                                 ! radiative transfer calculation.
+
+! === module SIS_tracer_registry ===
+
+! === module SIS_tracer_flow_control ===
 DT_RHEOLOGY = 50.0              !   [seconds] default = -1.0
                                 ! The sub-cycling time step for iterating the rheology
                                 ! and ice momentum equations. If DT_RHEOLOGY is negative,
@@ -104,8 +115,6 @@ SIS_TRACER_ADVECTION_SCHEME = "PPM:H3" ! default = "UPWIND_2D"
                                 !   PLM    - Piecewise Linear Method
                                 !   PPM:H3 - Piecewise Parabolic Method (Huyhn 3rd order)
 
-! === module SIS_tracer_registry ===
-
 ! === module SIS_sum_output ===
 MAXTRUNC = 200                  !   [truncations save_interval-1] default = 0
                                 ! The run will be stopped, and the day set to a very
@@ -113,8 +122,6 @@ MAXTRUNC = 200                  !   [truncations save_interval-1] default = 0
                                 ! MAXTRUNC times between  writing ice statistics.
                                 ! Set MAXTRUNC to 0 to stop if there is any truncation
                                 ! of sea ice velocities.
-
-! === module SIS_tracer_flow_control ===
 
 ! === module MOM_file_parser ===
 DOCUMENT_FILE = "SIS_parameter_doc" ! default = "MOM_parameter_doc"

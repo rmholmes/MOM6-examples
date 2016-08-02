@@ -1,44 +1,13 @@
 ! This file was written by the model and records the non-default parameters used at run-time.
 
-! === module MOM_domains ===
-REENTRANT_X = False             !   [Boolean] default = True
-                                ! If true, the domain is zonally reentrant.
-REENTRANT_Y = True              !   [Boolean] default = False
-                                ! If true, the domain is meridionally reentrant.
-NIGLOBAL = 128                  !
-                                ! The total number of thickness grid points in the
-                                ! x-direction in the physical domain. With STATIC_MEMORY_
-                                ! this is set in MOM_memory.h at compile time.
-NJGLOBAL = 4                    !
-                                ! The total number of thickness grid points in the
-                                ! y-direction in the physical domain. With STATIC_MEMORY_
-                                ! this is set in MOM_memory.h at compile time.
-
-! === module MOM_grid ===
-! Parameters providing information about the lateral grid.
-
-! === module MOM_hor_index ===
-! Sets the horizontal array index types.
-
-! === module MOM_verticalGrid ===
-! Parameters providing information about the vertical grid.
-RHO_0 = 1000.0                  !   [kg m-3] default = 1035.0
-                                ! The mean ocean density used with BOUSSINESQ true to
-                                ! calculate accelerations and the mass for conservation
-                                ! properties, or with BOUSSINSEQ false to convert some
-                                ! parameters from vertical units of m to kg m-2.
-ANGSTROM = 1.0E-15              !   [m] default = 1.0E-10
-                                ! The minumum layer thickness, usually one-Angstrom.
-NK = 21                         !   [nondim]
-                                ! The number of model layers.
-
 ! === module MOM ===
 BULKMIXEDLAYER = False          !   [Boolean] default = True
                                 ! If true, use a Kraus-Turner-like bulk mixed layer
                                 ! with transitional buffer layers.  Layers 1 through
                                 ! NKML+NKBL have variable densities. There must be at
                                 ! least NKML+NKBL+1 layers if BULKMIXEDLAYER is true.
-                                ! The default is the same setting as ENABLE_THERMODYNAMICS.
+                                ! BULKMIXEDLAYER can not be used with USE_REGRIDDING.
+                                ! The default is influenced by ENABLE_THERMODYNAMICS.
 DT = 250.0                      !   [s]
                                 ! The (baroclinic) dynamics time step.  The time-step that
                                 ! is actually used will be an integer fraction of the
@@ -54,6 +23,35 @@ SAVE_INITIAL_CONDS = True       !   [Boolean] default = False
                                 ! by IC_OUTPUT_FILE.
 IC_OUTPUT_FILE = "GOLD_IC"      ! default = "MOM_IC"
                                 ! The file into which to write the initial conditions.
+
+! === module MOM_domains ===
+REENTRANT_X = False             !   [Boolean] default = True
+                                ! If true, the domain is zonally reentrant.
+REENTRANT_Y = True              !   [Boolean] default = False
+                                ! If true, the domain is meridionally reentrant.
+NIGLOBAL = 128                  !
+                                ! The total number of thickness grid points in the
+                                ! x-direction in the physical domain. With STATIC_MEMORY_
+                                ! this is set in MOM_memory.h at compile time.
+NJGLOBAL = 4                    !
+                                ! The total number of thickness grid points in the
+                                ! y-direction in the physical domain. With STATIC_MEMORY_
+                                ! this is set in MOM_memory.h at compile time.
+
+! === module MOM_hor_index ===
+! Sets the horizontal array index types.
+
+! === module MOM_verticalGrid ===
+! Parameters providing information about the vertical grid.
+RHO_0 = 1000.0                  !   [kg m-3] default = 1035.0
+                                ! The mean ocean density used with BOUSSINESQ true to
+                                ! calculate accelerations and the mass for conservation
+                                ! properties, or with BOUSSINSEQ false to convert some
+                                ! parameters from vertical units of m to kg m-2.
+ANGSTROM = 1.0E-15              !   [m] default = 1.0E-10
+                                ! The minumum layer thickness, usually one-Angstrom.
+NK = 21                         !   [nondim]
+                                ! The number of model layers.
 
 ! === module MOM_tracer_registry ===
 
@@ -121,6 +119,9 @@ MINIMUM_DEPTH = 0.01            !   [m] default = 0.0
                                 ! The minimum depth of the ocean.
 MAXIMUM_DEPTH = 20.0            !   [m]
                                 ! The maximum depth of the ocean.
+
+! === module MOM_open_boundary ===
+! Controls where open boundaries are located, what kind of boundary condition to impose, and what data to apply, if any.
 ROTATION = "beta"               ! default = "2omegasinlat"
                                 ! This specifies how the Coriolis parameter is specified:
                                 !     2omegasinlat - Use twice the planetary rotation rate
@@ -133,6 +134,8 @@ COORD_CONFIG = "layer_ref"      !
                                 ! This specifies how layers are to be defined:
                                 !     file - read coordinate information from the file
                                 !       specified by (COORD_FILE).
+                                !     BFB - Custom coords for buoyancy-forced basin case
+                                !       based on SST_S, T_BOT and DRHO_DT.
                                 !     linear - linear based on interfaces not layers
                                 !     layer_ref - linear based on layer densities
                                 !     ts_ref - use reference temperature and salinity
@@ -148,6 +151,9 @@ LIGHTEST_DENSITY = 1022.0       !   [kg m-3] default = 1000.0
                                 ! The reference potential density used for layer 1.
 DENSITY_RANGE = 5.0             !   [kg m-3] default = 2.0
                                 ! The range of reference potential densities in the layers.
+
+! === module MOM_grid ===
+! Parameters providing information about the lateral grid.
 
 ! === module MOM_state_initialization ===
 THICKNESS_CONFIG = "lock_exchange" !
@@ -386,7 +392,7 @@ VARIABLE_BUOYFORCE = False      !   [Boolean] default = True
 BUOY_CONFIG = "NONE"            !
                                 ! The character string that indicates how buoyancy forcing
                                 ! is specified. Valid options include (file), (zero),
-                                ! (linear), (USER), and (NONE).
+                                ! (linear), (USER), (BFB) and (NONE).
 WIND_CONFIG = "zero"            !
                                 ! The character string that indicates how wind forcing
                                 ! is specified. Valid options include (file), (2gyre),

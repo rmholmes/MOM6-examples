@@ -1,40 +1,10 @@
 ! This file was written by the model and records the non-default parameters used at run-time.
 
-! === module MOM_domains ===
-TRIPOLAR_N = True               !   [Boolean] default = False
-                                ! Use tripolar connectivity at the northern edge of the
-                                ! domain.  With TRIPOLAR_N, NIGLOBAL must be even.
-NIGLOBAL = 360                  !
-                                ! The total number of thickness grid points in the
-                                ! x-direction in the physical domain. With STATIC_MEMORY_
-                                ! this is set in MOM_memory.h at compile time.
-NJGLOBAL = 210                  !
-                                ! The total number of thickness grid points in the
-                                ! y-direction in the physical domain. With STATIC_MEMORY_
-                                ! this is set in MOM_memory.h at compile time.
-
-! === module MOM_grid ===
-! Parameters providing information about the lateral grid.
-
-! === module MOM_hor_index ===
-! Sets the horizontal array index types.
-
-! === module MOM_verticalGrid ===
-! Parameters providing information about the vertical grid.
-NK = 50                         !   [nondim]
-                                ! The number of model layers.
-
 ! === module MOM ===
 DIABATIC_FIRST = True           !   [Boolean] default = False
                                 ! If true, apply diabatic and thermodynamic processes,
                                 ! including buoyancy forcing and mass gain or loss,
                                 ! before stepping the dynamics forward.
-BULKMIXEDLAYER = False          !   [Boolean] default = True
-                                ! If true, use a Kraus-Turner-like bulk mixed layer
-                                ! with transitional buffer layers.  Layers 1 through
-                                ! NKML+NKBL have variable densities. There must be at
-                                ! least NKML+NKBL+1 layers if BULKMIXEDLAYER is true.
-                                ! The default is the same setting as ENABLE_THERMODYNAMICS.
 USE_REGRIDDING = True           !   [Boolean] default = False
                                 ! If True, use the ALE algorithm (regridding/remapping).
                                 ! If False, use the layered isopycnal algorithm.
@@ -89,6 +59,27 @@ CHECK_BAD_SURFACE_VALS = True   !   [Boolean] default = False
 SAVE_INITIAL_CONDS = True       !   [Boolean] default = False
                                 ! If true, write the initial conditions to a file given
                                 ! by IC_OUTPUT_FILE.
+
+! === module MOM_domains ===
+TRIPOLAR_N = True               !   [Boolean] default = False
+                                ! Use tripolar connectivity at the northern edge of the
+                                ! domain.  With TRIPOLAR_N, NIGLOBAL must be even.
+NIGLOBAL = 360                  !
+                                ! The total number of thickness grid points in the
+                                ! x-direction in the physical domain. With STATIC_MEMORY_
+                                ! this is set in MOM_memory.h at compile time.
+NJGLOBAL = 210                  !
+                                ! The total number of thickness grid points in the
+                                ! y-direction in the physical domain. With STATIC_MEMORY_
+                                ! this is set in MOM_memory.h at compile time.
+
+! === module MOM_hor_index ===
+! Sets the horizontal array index types.
+
+! === module MOM_verticalGrid ===
+! Parameters providing information about the vertical grid.
+NK = 50                         !   [nondim]
+                                ! The number of model layers.
 
 ! === module MOM_tracer_registry ===
 
@@ -145,6 +136,9 @@ MINIMUM_DEPTH = 0.5             !   [m] default = 0.0
                                 ! MINIMUM_DEPTH is assumed to be land and all fluxes are masked out.
                                 ! If MASKING_DEPTH is specified, then all depths shallower than
                                 ! MINIMUM_DEPTH but deeper than MASKING_DEPTH are rounded to MINIMUM_DEPTH.
+
+! === module MOM_open_boundary ===
+! Controls where open boundaries are located, what kind of boundary condition to impose, and what data to apply, if any.
 CHANNEL_CONFIG = "global_1deg"  ! default = "none"
                                 ! A parameter that determines which set of channels are
                                 ! restricted to specific  widths.  Options are:
@@ -162,6 +156,8 @@ COORD_CONFIG = "file"           !
                                 ! This specifies how layers are to be defined:
                                 !     file - read coordinate information from the file
                                 !       specified by (COORD_FILE).
+                                !     BFB - Custom coords for buoyancy-forced basin case
+                                !       based on SST_S, T_BOT and DRHO_DT.
                                 !     linear - linear based on interfaces not layers
                                 !     layer_ref - linear based on layer densities
                                 !     ts_ref - use reference temperature and salinity
@@ -236,6 +232,9 @@ REGRID_TIME_SCALE = 8.64E+04    !   [s] default = 0.0
                                 ! and the target (new) grid. A short time-scale favors the target
                                 ! grid (0. or anything less than DT_THERM) has no memory of the old
                                 ! grid. A very long time-scale makes the model more Lagrangian.
+
+! === module MOM_grid ===
+! Parameters providing information about the lateral grid.
 
 ! === module MOM_state_initialization ===
 INIT_LAYERS_FROM_Z_FILE = True  !   [Boolean] default = False
@@ -619,7 +618,7 @@ USE_NEUTRAL_DIFFUSION = True    !   [Boolean] default = False
 BUOY_CONFIG = "file"            !
                                 ! The character string that indicates how buoyancy forcing
                                 ! is specified. Valid options include (file), (zero),
-                                ! (linear), (USER), and (NONE).
+                                ! (linear), (USER), (BFB) and (NONE).
 ARCHAIC_OMIP_FORCING_FILE = False !   [Boolean] default = True
                                 ! If true, use the forcing variable decomposition from
                                 ! the old German OMIP prescription that predated CORE. If
