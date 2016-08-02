@@ -57,7 +57,7 @@ IO_LAYOUT = 1, 1                ! default = 0
 
 ! === module MOM_grid ===
 ! Parameters providing information about the vertical grid.
-NK = 40                         !   [nondim]
+NK = 80                         !   [nondim]
                                 ! The number of model layers.
 
 ! === module MOM_verticalGrid ===
@@ -143,9 +143,9 @@ TOPO_CONFIG = "ABMIX2D"          !
                                 !       DOME2D gravity current/overflow test case.
                                 !     seamount - Gaussian bump for spontaneous motion test case.
                                 !     USER - call a user modified routine.
-ABMIX2D_SLOPE_DEPTH = 0.0       ! Slope setup
+ABMIX2D_SLOPE_DEPTH = 0.3       ! Slope setup
 ABMIX2D_BASIN_WIDTH = 0.0       !
-ABMIX2D_SLOPE_CURV =  0.4       !
+ABMIX2D_SLOPE_CURV =  -0.4      !
 ABMIX2D_INITIAL_BOTTH = 0.0     !
 MAXIMUM_DEPTH = 4000.0          !   [m]
                                 ! The maximum depth of the ocean.
@@ -350,7 +350,7 @@ SET_BFLUX = True                ! Explicitely set buoyancy flux to a
 SBF_BBL_THICKNESS = 150.0       ! [m] BBL thickness 
 SBF_DECAY_SCALE = 500.0         ! [m] e-folding decay scale
 SBF_TAPER_SCALE = 1000.0        ! [m] e-folding decay scale
-SBF_B0 = 0.35E-06                ! [m2s-3] buoyancy flux at top of BBL
+SBF_B0 = 0.3E-06                ! [m2s-3] buoyancy flux at top of BBL
 
 ! === module MOM_KPP ===
 ! This is the MOM wrapper to CVmix:KPP

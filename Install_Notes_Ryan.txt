@@ -464,3 +464,14 @@ This version git commited and analysis saved as steady_state1* with a
 comparison steady_state1not with the opposite curvature that doesn't
 get to a steady state.
 
+Profiling:
+3cpus 4x80x80 -> 11.3 s/10 days
+      4x80x160 -> 23.6s/10 days
+      4x80x40 -> 5.7 s/10 days
+
+25-07-2016 -----------------------------------------------------------
+
+Long 5000 day run with 80 levels and a flat top completed, very much
+in a steady state. Saved as run0001* in
+ccrcDAT/Abyssal_Mixing/MOM6_runs output images saved as
+steady5krun... Started a similar run with opposite curvature.

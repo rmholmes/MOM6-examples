@@ -18,3 +18,6 @@ RESTART
 .ipynb_checkpoints
 # Ignore anything labeled ignore
 *.ignore
+# Ignore data file locations:
+*ABMIX_runs*
+
