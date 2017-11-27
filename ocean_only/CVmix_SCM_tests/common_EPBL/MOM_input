@@ -348,8 +348,6 @@ HMIX_MIN = 2.0                  !   [m] default = 0.0
                                 ! is determined dynamically.
 
 ! === module MOM_opacity ===
-PEN_SW_NBANDS = 3               ! default = 1
-                                ! The number of bands of penetrating shortwave radiation.
 
 ! === module MOM_tracer_advect ===
 
@@ -384,7 +382,7 @@ MAXCPU = 2.88E+04               !   [wall-clock seconds] default = -1.0
                                 ! factor of the number of processors used.
 
 ! === module MOM_main (MOM_driver) ===
-DAYMAX = 15.0                   !   [days]
+DAYMAX = 5.0                    !   [days]
                                 ! The final time of the whole simulation, in units of
                                 ! TIMEUNIT seconds.  This also sets the potential end
                                 ! time of the present run segment if the end time is

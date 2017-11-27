@@ -18,6 +18,7 @@ git submodule update src/FMS
 git submodule update --init --recursive src/MOM6
 git submodule update tools/matlab/gtools
 git submodule update src/mkmf
+git submodule update tools/python/MIDAS
 
 30-5-2016 ------------------------------------------------------------
 For a simple setup just to play locally, used the following process:

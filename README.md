@@ -1,3 +1,6 @@
+| Compile | Fast Run | Full Run | Valgrind | Diagnostics | MOM6 documentation | MOM6 coverage |
+|:-------:|:--------:|:--------:|:--------:|:-----------:|:------------------:|:-------------:|
+| [![Build Status](https://climate-cms.nci.org.au/jenkins/buildStatus/icon?job=mom-ocean.org/MOM6_build_copy)](https://climate-cms.nci.org.au/jenkins/job/mom-ocean.org/job/MOM6_build_copy/) | [![Fast Run Status](https://climate-cms.nci.org.au/jenkins/buildStatus/icon?job=mom-ocean.org/MOM6_fast_run)](https://climate-cms.nci.org.au/jenkins/job/mom-ocean.org/job/MOM6_fast_run/) | [![Run Status](https://climate-cms.nci.org.au/jenkins/buildStatus/icon?job=mom-ocean.org/MOM6_run)](https://climate-cms.nci.org.au/jenkins/job/mom-ocean.org/job/MOM6_run/) | [![Valgrind Status](https://climate-cms.nci.org.au/jenkins/buildStatus/icon?job=mom-ocean.org/MOM6_runtime_analyzer)](https://climate-cms.nci.org.au/jenkins/job/mom-ocean.org/job/MOM6_runtime_analyzer/) | [![Diagnostics Status](https://climate-cms.nci.org.au/jenkins/buildStatus/icon?job=mom-ocean.org/MOM6_diagnostics)](https://climate-cms.nci.org.au/jenkins/job/mom-ocean.org/job/MOM6_diagnostics/) | [![Read The Docs Status](https://readthedocs.org/projects/mom6/badge/?badge=latest)](http://mom6.readthedocs.io/) | [![codecov](https://codecov.io/gh/NOAA-GFDL/MOM6/branch/dev%2Fmaster/graph/badge.svg)](https://codecov.io/gh/NOAA-GFDL/MOM6) |
 
 # MOM6-examples
 
@@ -5,17 +8,6 @@ This repository provides the configurations (input parameters and data) and thei
 regression data (for testing), of models that involve [MOM6](https://github.com/NOAA-GFDL/MOM6)
 and [SIS2](https://github.com/NOAA-GFDL/SIS2). The repository also contains tools
 for analysis and preprocessing.
-
-## Testing status
-
-
-Compile:  [![Build Status](https://climate-cms.nci.org.au/jenkins/buildStatus/icon?job=mom-ocean.org/MOM6_build_copy)](https://climate-cms.nci.org.au/jenkins/job/mom-ocean.org/job/MOM6_build_copy/)
-
-Run:      [![Run Status](https://climate-cms.nci.org.au/jenkins/buildStatus/icon?job=mom-ocean.org/MOM6_run)](https://climate-cms.nci.org.au/jenkins/job/mom-ocean.org/job/MOM6_run/)
-
-Valgrind: [![Valgrind Status](https://climate-cms.nci.org.au/jenkins/buildStatus/icon?job=mom-ocean.org/MOM6_runtime_analyzer)](https://climate-cms.nci.org.au/jenkins/job/mom-ocean.org/job/MOM6_runtime_analyzer/)
-
-(Click on icons for details)
 
 # Where to find information
 
@@ -32,7 +24,7 @@ The top level directory structure groups source code and input files as follow:
 
 | File/directory              | Purpose |
 | --------------              | ------- |
-| ```LICENSE.md```            | a copy of the Gnu general public license, version 3. |
+| ```LICENSE.md```            | a copy of the Gnu lesser general public license, version 3. |
 | ```README.md```             | this file with basic pointers to more information. |
 | ```src/```                  | source code for MOM6, SIS2 and FMS-shared code. |
 | ```tools/```                | tools for working with MOM6 (not source code and not necessarily supported). |
@@ -53,7 +45,7 @@ The top level directory structure groups source code and input files as follow:
 # Policies
 
 The repository policies (repository access, branches, procedures, ...) are the same as the
-[MOM6 source code policies](https://github.com/NOAA-GFDL/MOM6/wiki/MOM6-repository-policies).
+[MOM6 source code policies](https://github.com/NOAA-GFDL/MOM6-examples/wiki/MOM6-repository-policies).
 
 # Disclaimer
 
